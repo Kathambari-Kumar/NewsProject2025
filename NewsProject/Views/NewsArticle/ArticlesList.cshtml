@@ -1,0 +1,118 @@
+﻿@model IEnumerable<NewsProject.Models.DB.Article>
+
+@{
+    ViewData["Title"] = "ArticlesList";
+}
+
+<h1>ArticlesList</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateStamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LinkText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Headline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContentSummary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Views)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Likes)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Continent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsArchived)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsApproved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EditorChoice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LinkText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Headline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContentSummary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Views)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Likes)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.Continent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsArchived)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsApproved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EditorChoice)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    @if (ViewBag.Page > 1)
+    {
+        <a class="btn btn-sm btn-secondary" href="?page=@(ViewBag.Page - 1)&length=@ViewBag.Length"> Previous </a>
+    }
+
+    <span class="fw-bold text-bg-info">
+        &nbsp;&nbsp; Page @ViewBag.Page of
+        @(Math.Ceiling((decimal)ViewBag.TotalCount / ViewBag.Length))
+    </span> &nbsp;&nbsp;
+
+    @if (ViewBag.Page <
+    Math.Ceiling((decimal)ViewBag.TotalCount / ViewBag.Length))
+    {
+        <a class="btn btn-sm btn-secondary" href="?page=@(ViewBag.Page + 1)&length =@ViewBag.Length"> Next </a>
+
+    }
+
+  
+
+</div>

@@ -1,0 +1,49 @@
+﻿@model NewsProject.Models.DB.Product
+
+@{
+    ViewData["Title"] = "UpdateProduct";
+}
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Update a Product</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+    </div>
+</div>
+<hr />
+
+<div id="font" class="row justify-content-center border border-1" style="background-color:whitesmoke">
+    <div class="col-md-6">
+        <form asp-action="UpdateProduct" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" value="@Model.ProductName" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" value="@Model.Price" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" value="@Model.ImageUrl" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group fw-bold mt-2">
+                <label for="file">Click to select an Image File to upload</label>
+                <input id="imgfile" asp-for="File" type="file" />
+            </div>
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="Update" class="w-100 btn bg-success bg-gradient" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

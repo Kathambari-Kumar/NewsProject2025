@@ -1,0 +1,59 @@
+﻿@model NewsProject.Models.VM.SubscriptionVM
+@{
+    ViewData["Title"] = "UpgradeSubscription";
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Current Subscription:<strong>@Model.SubscriptionType</strong></h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bg-gradient float-end fonttype" asp-controller="Home" asp-action="Index">Back</a>
+    </div>
+</div>
+<hr />
+<div id="font" class="row justify-content-center border border-2" style="background-color:white">
+    <div class="col-lg-8 col-md-8 mb-2">
+    <form method="post" asp-action="UpgradeSubscription" asp-controller="Subscription">
+        <div class="form-group">
+            <label for="months">Select Months to upgrade:</label>
+            <select class="form-control" id="months" name="months" required onchange="updatePrice()">
+                <option value="1">1 Month</option>
+                <option value="2">2 Months</option>
+                <option value="3">3 Months</option>
+                <option value="6">6 Months</option>
+                <option value="12">12 Months</option>
+            </select>
+        </div>
+        <div class="form-group mt-2">
+            <p><strong>Total Price: </strong>kr<span id="totalPrice"></span></p>
+        </div>
+
+        <button type="submit" class="mb-2 btn bg-success bg-gradient text-white w-100">Upgrade Subscription</button>
+    </form>
+    </div>
+</div>
+<hr />
+<script>
+
+    // Base price per month
+    const pricePerMonth = @Model.Price;
+    function updatePrice() {
+        const months = document.getElementById("months").value;
+        let totalPrice = months * pricePerMonth;
+
+        // Apply discounts
+        if (months >= 6 && months < 12) {
+            totalPrice *= 0.95; // 5% discount for 6+ months
+        } else if (months >= 12) {
+            totalPrice *= 0.90; // 10% discount for 12+ months
+        }
+
+        document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);
+    }
+
+    // Initialize the price display
+    updatePrice();
+</script>
+

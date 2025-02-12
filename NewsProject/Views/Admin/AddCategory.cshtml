@@ -1,0 +1,53 @@
+﻿
+@model NewsProject.Models.DB.Category
+@inject IHttpContextAccessor httpContextAccessor
+@using Newtonsoft.Json
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var session = httpContextAccessor.HttpContext.Session;
+    List<string> categoryNameList = JsonConvert.DeserializeObject<List<string>>(session.GetString("CategoryNameList"));
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Add new Category</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient fonttype float-end" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+    </div>
+</div>
+<hr />
+<div id="font" class="row justify-content-center border border-1" style="background-color:whitesmoke">
+    <div class="col-md-4 fonttype">
+        <br />
+        <h5>Category List</h5>
+        <table>           
+            @foreach (var categoryName in categoryNameList)
+            {
+                <tr>
+                <td><p>@categoryName</p></td>
+                </tr>
+            }
+            
+        </table>
+    </div>
+    <div class="col-md-4">
+        <br /><br />
+        <form asp-action="AddCategory" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Create" class="w-100 btn btn-success bg-gradient" />
+            </div>
+            <br />
+        </form>
+    </div>
+</div>

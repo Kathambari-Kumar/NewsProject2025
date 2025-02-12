@@ -1,0 +1,47 @@
+﻿@model NewsProject.Models.DB.SubscriptionType
+
+@{
+    ViewData["Title"] = "EditSubscriptionType";
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Edit Subscription Type</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+    </div>
+</div>
+<hr />
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="EditSubscriptionType">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="TypeName" class="control-label"></label>
+                <input asp-for="TypeName" class="form-control" />
+                <span asp-validation-for="TypeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <input type="submit" value="Save Changes" class="w-100 text-white btn bg-success bg-gradient" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+

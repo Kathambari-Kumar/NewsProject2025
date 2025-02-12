@@ -1,0 +1,22 @@
+﻿@model NewsProject.Models.DB.Article
+@{
+    ViewData["Title"] = "EditorArticleDetails";
+}
+
+<h1>EditorArticleDetails</h1>
+
+<h2>@Model.Headline</h2>
+<p>@Model.ContentSummary</p>
+<p>@Model.Content</p>
+
+<form asp-action="Translate" asp-route-id="@Model.Id">
+    <label>Select Language:</label>
+    <select name="lang">
+        <option value="sv">Swedish</option>
+        <option value="fr">French</option>
+        <option value="es">Spanish</option>
+        <option value="de">German</option>
+    </select>
+    <button type="submit">Translate</button>
+</form>
+

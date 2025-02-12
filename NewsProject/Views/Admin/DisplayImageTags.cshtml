@@ -1,0 +1,41 @@
+﻿@model IEnumerable<NewsProject.Models.VM.ImageTagsVM>
+
+@{
+    ViewData["Title"] = "Images with Associated Tags";
+}
+
+<h2>Images with Tags</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Tags</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.ImageLink" alt="Related Image" class="img-thumbnail" width="150" />
+                </td>
+                <td>
+                    @if (item.Tags.Any())
+                    {
+                        <ul>
+                            @foreach (var tag in item.Tags)
+                            {
+                                <li>@tag</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No Tags Available</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

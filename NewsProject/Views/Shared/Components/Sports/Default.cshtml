@@ -1,0 +1,77 @@
+﻿@model IEnumerable<NewsProject.Models.VM.BriefNewsVM>
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@inject SignInManager<User> SignInManager
+
+@* View component view for Sports *@
+
+@foreach (var item in Model)
+{
+    <div id="Titlebar" class="mt-lg-2 mb-lg-2">
+        <p class="h6 text-white fonttype ms-lg-2 mt-lg-1">@item.CategoryName</p>
+    </div>
+    <div class="fonttype row">
+        @foreach (var article in item.ArticleList)
+        {
+            @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Reader"))
+            {
+                <div class="col-lg-3 col-md-3 col-sm-12 mt-lg-2">
+                    <a class="btn" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                        <img src="@article.ImageLink" class="card-img-top" alt="..."></a>
+                    <a class="btn" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                        <h5 class="card-title">@article.LinkText</h5></a>
+                    <p class="card-text">
+                        @article.ContentSummary
+                        <a class="btn" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">Read More...</a>
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-3 col-md-3 col-sm-12 mt-lg-2">
+                    <img src="@article.ImageLink" class="card-img-top" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner" alt="...">
+                    <h5 class="card-title" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">@article.LinkText</h5>
+                    <p class="card-text">
+                        @article.ContentSummary
+                        <a class="border-0" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">Read More...</a>
+                    </p>
+                </div>
+            }           
+            <br />
+        }
+        <div id="moresport" class="text-center mt-3">
+            <button id="font" onclick="MoreArticlesSports('6')" class="btn fw-bold btn-link text-danger">More Articles</button>
+        </div>
+    </div>
+}
+<hr class="line3"/>
+
+<style>
+    #Titlebar {
+        height: auto;
+        background-color: darkolivegreen;
+        max-width: 100%;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+</style>
+
+ <script>
+    function MoreArticlesSports(count){
+        $.ajax({
+            type: "GET",
+            url: "/NewsArticle/SportsVC",
+            data: {count:count},
+            success: function(response){
+                console.log(response);
+                console.log(document.getElementById("sports"));
+                    $("#sports").html(response);
+                document.getElementById("moresport").hidden = true;
+            },
+            error : function(error){
+                alert("operation failed",error);
+            }
+        });
+    }
+</script>
+ 

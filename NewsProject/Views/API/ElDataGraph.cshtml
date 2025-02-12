@@ -1,0 +1,47 @@
+﻿
+<section class="">
+   <div class="container-fluid px-0">
+        <div class="row g-0">
+            <!-- First column -->
+            <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12 min-vh-100 pe-3 mt-2 mt-2">
+                <hr />
+                <div id="Heading"><h1>Historical Electricity Prices for the Four Zones in Sweden</h1></div>
+                <hr />
+                <div>
+                    <input type="date" id="datePicker" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <button id="fetchDataButton">Fetch Data</button>
+                </div>
+                <canvas id="electricityChart" width="800" height="400"></canvas>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script src="~/js//HistoricalElectricityData.js"></script>
+                <hr />              
+            </div>          
+            <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12 min-vh-100 pe-3 mt-2 mt-2">
+                <div>
+                    <vc:editors-choice></vc:editors-choice>
+                </div>
+            </div>
+        </div>
+   </div>
+</section>
+
+<style>
+    #Heading {
+        color: red;
+        text-align: left;
+        margin-top: 0px;
+        font-family: Bahnschrift;
+    }
+
+    #Titlebar {
+        background-color: dimgrey;
+        border: 1px solid;
+        border-left-color: red;
+        border-left-width: 7px;
+        font-size: 16px;
+        font-family: Bahnschrift;
+        height: auto;
+    }
+</style>

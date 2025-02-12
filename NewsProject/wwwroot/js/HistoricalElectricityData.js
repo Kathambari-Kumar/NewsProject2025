@@ -1,0 +1,85 @@
+﻿const ctx = document.getElementById("electricityChart").getContext("2d");
+let chart;
+
+// Function to fetch data and update the chart
+async function fetchDataAndUpdateChart(date) {
+    try {
+        const response = await fetch(`/API/API/GetElectricityData?date=${date}`);
+        if (!response.ok) throw new Error("Failed to fetch data");
+
+        const electricityData = await response.json();
+
+        // Ensure the data structure is correct
+        console.log(electricityData);
+
+        const labels = Array.from({ length: 24 }, (_, i) => `${i}:00`); // Hour labels for X axis
+
+        const datasets = [
+            {
+                label: "Zone 1 (SE1)",
+                data: electricityData.sE1.map(p => p.price_sek), // Extracting price_eur for each hour
+                borderColor: "rgba(75, 192, 192, 1)",
+                fill: false,
+            },
+            {
+                label: "Zone 2 (SE2)",
+                data: electricityData.sE2.map(p => p.price_sek), // Extracting price_eur for each hour
+                borderColor: "rgba(153, 102, 255, 1)",
+                fill: false,
+            },
+            {
+                label: "Zone 3 (SE3)",
+                data: electricityData.sE3.map(p => p.price_sek), // Extracting price_eur for each hour
+                borderColor: "rgba(255, 159, 64, 1)",
+                fill: false,
+            },
+            {
+                label: "Zone 4 (SE4)",
+                data: electricityData.sE4.map(p => p.price_sek), // Extracting price_eur for each hour
+                borderColor: "rgba(255, 99, 132, 1)",
+                fill: false,
+            }
+        ];
+
+        if (!chart) {
+            // Initialize the chart if it doesn't exist
+            chart = new Chart(ctx, {
+                type: "line",
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: { display: true, text: "Hour of the Day", font: { weight: "bold" } },
+
+                        },
+                        y: {
+                            title: { display: true, text: "Price (SEK)", font: { weight: "bold" } },
+                        },
+                    },
+                },
+            });
+        } else {
+            // Update the chart if it already exists
+            chart.data.datasets = datasets;
+            chart.update();
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+// Fetch data every hour
+setInterval(() => {
+    const date = new Date().toISOString().split("T")[0]; // Current date in yyyy-MM-dd format
+    fetchDataAndUpdateChart(date);
+}, 3600000); // Update every hour (3600000ms)
+
+// Initial fetch
+const initialDate = new Date().toISOString().split("T")[0];
+fetchDataAndUpdateChart(initialDate);
+
+document.getElementById("fetchDataButton").addEventListener("click", () => {
+    const selectedDate = document.getElementById("datePicker").value;
+    if (selectedDate) fetchDataAndUpdateChart(selectedDate);
+});

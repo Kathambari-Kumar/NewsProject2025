@@ -1,0 +1,47 @@
+﻿@model IEnumerable<NewsProject.Models.DB.Product>
+
+@{
+    ViewData["Title"] = "ProductDetails";
+    var result = TempData["Result"];
+}
+@if (result != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@result</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<hr />
+<h5 id="font" class="justify-content-end text-danger">Product Details</h5>
+<hr />
+<div id="font" class="row justify-content-center border border-1" style="background-color:whitesmoke">
+    <div class="col">
+        <table class="table table-bordered table-success">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width:100px;">ProductName</th>
+                    <th class="text-center" style="width:50px;">Price[SEK]</th>
+                    <th class="text-center" style="width:70px;">Image</th>
+                    <th class="text-center" style="width:50px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@item.ProductName</td>
+                        <td class="text-center">@item.Price</td>
+                        <td class="text-center"><img src="@item.ImageUrl" style="width:70px;height:70px;" /></td>
+                        <td >
+                            <a class="text-black fw-bold" asp-action="UpdateProduct" asp-route-id="@item.Id">Edit</a>
+                            &nbsp;&nbsp;
+                            <a class="text-danger fw-bold" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

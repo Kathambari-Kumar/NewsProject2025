@@ -1,0 +1,35 @@
+﻿@model IEnumerable<NewsProject.Models.DB.SubscriptionType>
+
+@{
+    ViewData["Title"] = "Subscription";
+}
+
+<br />
+<div class="fonttype">
+    <h5>Subscription List</h5>
+    <table id="articletable" class="table table-bordered table-success">
+        <thead>
+            <tr>
+                <th>Type Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subscription in Model)
+            {
+                <tr>
+                    <td>@subscription.TypeName</td>
+                    <td>@subscription.Description</td>
+                    <td>@subscription.Price</td>
+                    <td>
+                        <a class="text-black fw-bold" asp-controller="Subscription"   asp-action="EditSubscriptionType" asp-route-id="@subscription.Id">Edit</a>
+                        &nbsp;&nbsp;
+                        <a class="text-danger fw-bold" asp-controller="Subscription" asp-action="DeleteSubscriptionType" asp-route-id="@subscription.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<NewsProject.Models.VM.BriefNewsVM>
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@inject SignInManager<User> SignInManager
+
+@{
+    ViewData["Title"] = "Default";
+}
+
+@* View component view for most popular news *@
+
+<div id="Heading"><h3>Most Popular</h3></div>
+<hr />
+<div class="fonttype mt-lg-2 row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-12">
+            @if (@item.CategoryName != "Weather")
+            {
+                <div id="SidebarTitle">
+                    <p class="h6 text-white ms-lg-1 mt-lg-1">
+                        @item.CategoryName
+                    </p>
+                </div>
+                <br />
+                <div style="background-color:ghostwhite" class="mb-lg-2 mx-lg-2">
+                    @foreach (var article in item.ArticleList)
+                    {
+                        @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Reader"))
+                        {
+                            <div class="mb-3">
+                                <a asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id" class="border-0 text-decoration-underline ms-2 h6 link-underline-success">
+                                @article.LinkText</a></div>
+                        }
+                        else
+                        {
+                            <div class="mb-3"><a onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner" class="text-decoration-underline border-0 mt-3 h6 link-underline-success ms-2">
+                                @article.LinkText</a></div>
+                        }
+                    }
+                </div>             
+            }
+        </div>
+    }
+</div>
+<hr class="line2"/>
+
+<style>
+    a:hover {
+        cursor:pointer;
+        color : red;
+    }
+    #Heading {
+        color: red;
+        text-align: left;
+        margin-top: 0px;
+        font-family: Bahnschrift;
+    }
+
+    #SidebarTitle {
+        height: auto;
+        background-color: darkolivegreen;
+        opacity: 0.8;
+        max-width: 100%;
+        font-size: 16px;
+        font-family:Georgia;
+    }
+
+    hr.line2 {
+        border-top: 1px solid red;
+        border-radius: 2px;
+    }
+</style>

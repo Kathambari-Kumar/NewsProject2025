@@ -1,0 +1,26 @@
+﻿@model NewsProject.Models.VM.QuizVM
+
+
+
+<div class="quiz">
+    <div>
+        <img src="@Model.ImageLink" alt="Quiz Image" class="quiz-main-image" />
+  </div>
+    <div class="quiz-description">
+        <h2 style="font-weight: bold; font-size: 2rem; color: #007bff;">Ten Questions</h2>
+        <p style="font-size: 1.2rem; color: #555;">Answer ten questions about the Christmas season.</p>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a asp-controller="Quiz" asp-action="Index" asp-route-id="@Model.Id"
+           class="btn btn-primary" style="text-decoration: none; font-size: 1.1rem;">
+            Go to Questions
+        </a>
+    </div>
+
+    <div style="margin-top: 10px; font-size: 1rem; color: #777;">
+        @DateTime.UtcNow.ToString("yyyy-MM-dd")
+    </div>
+</div>
+
+

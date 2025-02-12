@@ -1,0 +1,114 @@
+﻿@model IEnumerable<NewsProject.Models.VM.BriefNewsVM>
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@inject SignInManager<User> SignInManager
+
+@{
+    ViewData["Title"] = "Default";
+}
+
+@* View component view for latest news *@
+
+<hr />
+<div id="Heading"><h3>Latest News</h3></div>
+<hr />
+<div>
+    @foreach (var item in Model)
+    {
+        if (@item.CategoryName != "Weather" && @item.CategoryName != "Sports" && @item.CategoryName != "Technology" && @item.CategoryName != "Culture")
+        {
+            <div id="LC_Titlebar" style="background-color:dimgray">
+                <p class="h6 text-white ms-lg-1 mt-lg-1">@item.CategoryName</p>
+            </div>
+            <div>
+                @foreach (var article in item.ArticleList)
+                {
+                    var audioId = "audioPlayer" + article.Id;
+                    @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Reader"))
+                    {
+                        <div>
+                            <a id="LinkText" class="btn h6" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                                @article.LinkText
+                            </a>
+                            <a class="btn h6" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                                <img src="@article.ImageLink" style="height:auto;max-width:100%" />
+                            </a>
+                            <div id="DateStamp" class="mt-0"> @article.DateStamp.ToLongDateString()</div>
+                            <div class="px-lg-2" id="Content">
+                                @article.ContentSummary
+                                <a class="btn border-0 text-danger" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">Read More...</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a id="LinkText" class="btn h6" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">
+                            @article.LinkText
+                        </a>
+                    
+                        <a class="btn h6" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">
+                            <img src="@article.ImageLink" style="height:auto;max-width:100%" />
+                        </a>
+                    
+                        <div id="DateStamp" class="mt-0"> @article.DateStamp.ToLongDateString()</div>
+                        <div id="Content">
+                            @article.ContentSummary
+                            <a class="btn border-0 text-danger" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">Read More...</a>
+                        </div>
+                        <div>
+                            <audio id="@audioId">
+                                <source src="@article.VoiceInput" type="audio/mp3" />
+                            </audio>
+                        </div>
+                    }
+                    <hr class="line" />
+                }
+            </div>
+        }
+    }
+</div>
+
+<style>
+    #Heading {
+        color: red;
+        text-align: left;
+        margin-top: 0px;
+        font-family: Bahnschrift;
+    }
+
+    hr.line {
+        border-top: 1px dashed red;
+    }
+    #LC_Titlebar {
+        height: auto;
+        border: 1px solid;
+        border-left-color: red;
+        border-left-width: 7px;
+        max-width: 100%;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+
+    #LinkText {
+        color: blue;
+        font-size: 25px;
+        font-family: Bahnschrift;
+        text-decoration: none;
+        text-align: left;
+    }
+
+    #DateStamp {
+        color: darkolivegreen;
+        opacity: 0.8;
+        font-family: Bahnschrift;
+        padding-left: 11px;
+    }
+
+    #Content {
+        font-family: Bahnschrift;
+        justify-content: center;
+        text-align: justify;
+        /* white-space: pre-line; */
+        padding-left: 7px;
+    }
+</style>

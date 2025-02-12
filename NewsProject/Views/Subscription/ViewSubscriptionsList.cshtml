@@ -1,0 +1,62 @@
+﻿@model IEnumerable<NewsProject.Models.VM.SubscriptionsListVM>
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "ViewSubscriptionsList";
+    var user = UserManager.GetUserAsync(User).Result;
+    var UserName = user.FirstName + " " + user.LastName;
+
+}
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Subscription History </h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient fonttype" asp-controller="Home" asp-action="Index">Back</a>
+    </div>
+</div>
+<hr />
+
+@if (Model.Any())
+{
+    <table id="articletable" class="table table-bordered table-success">
+        <thead>
+            <tr>
+                <th class="text-center" style="width:130px">UserName</th>
+                <th class="text-center" style="width:200px">Subscription Type</th>
+                <th class="text-center" style="width:50px">Price</th>
+                <th class="text-center" style="width:150px">Created On</th>
+                <th class="text-center" style="width:150px">Expires On</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.UserName</td>
+                    <td>@item.SubscriptionType</td>
+                    <td>@item.Price</td>
+                    <td>@item.Created.ToLongDateString()</td>
+                    <td>@item.Expiry.ToLongDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info align-items-center" role="alert">
+        <h4 class="alert-heading">Digital Dragons</h4>
+        <h6>Dear @UserName</h6>
+        <h6>You haven't purchased any subscription plan yet!!</h6>
+        <h6>Team Digital Dragons</h6>
+        <a class="btn bg-success bg-gradient text-white fw-bold fonttype" asp-Controller="Subscription" asp-action="Subscription">
+            Wanna Subscribe?
+        </a>
+        <hr />
+    </div>
+}
+<hr />

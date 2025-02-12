@@ -1,0 +1,253 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Podcast News</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bg-gradient fonttype text-white float-end" asp-controller="Home" asp-action="Index">Back</a>
+    </div>
+
+</div>
+<hr />
+<div id="podcastContainer">
+<div class="row justify-content-center">
+
+    <div class="col-xl-2 col-lg-2 col-md-2 mt-5 mb-3 ms-5" >
+            <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg" id="icon1" onclick="PlayNews1()" />
+    </div>
+        <div class=" col-xl-6 col-lg-6 col-md-6 fonttype mt-3 mb-3">
+            <h5>
+                <a class="border-0 text-dark" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="111">
+                    What is blockchain? Why it is important?
+                </a></h5>
+            <h6 class="text-white">
+                Blockchain technology is an advanced database mechanism that allows 
+                transparent information sharing within a business network. 
+                A blockchain database stores data in blocks that are linked together in a chain.
+                </h6>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 mt-1 mb-1">
+            <a asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="111">
+                <img class="border-0 rounded" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/BlockChain.webp" id="image" />
+            </a>
+        </div>
+        <audio id="news1">
+            <source src="~/media/BlockChainNews.mp3" type="audio/mpeg" />
+        </audio>
+</div>
+</div>
+<hr />
+
+<div id="podcastContainer">
+    <div class="row justify-content-center">
+
+        <div class="col-xl-2 col-lg-2 col-md-2 mt-5 mb-3 ms-5">
+            <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg" id="icon2" onclick="PlayNews2()" />
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 fonttype mt-3 mb-3 text-white">
+            <h5>
+                <a class="border-0 text-dark" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="112">
+                    What is digital-twin technology?
+                    What are different types of digital-twin technology?
+                </a>
+            </h5>
+            <h6 class="text-white">
+                A digital twin is a digital replica of a physical object, person, system,
+                or process, contextualized in a digital version of its environment. 
+            </h6>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 fonttype mt-1 mb-1">
+            <a asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="112">
+                <img class="border-0 rounded" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/TwinTechnolgy.webp" id="image" />
+            </a>
+        </div>
+
+        <audio id="news2">
+            <source src="~/media/DigitalTwin.mp3" type="audio/mpeg" />
+        </audio>
+    </div>
+</div>
+<hr />
+
+<div id="podcastContainer">
+    <div class="row justify-content-center">
+
+        <div class="col-xl-2 col-lg-2 col-md-2 mt-5 mb-3 ms-5">
+            <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg" id="icon3" onclick="PlayNews3()" />
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 fonttype mt-3 mb-3 text-white">
+            <h5>
+                <a class="border-0 text-dark" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="113">
+                     Want to feel more satisfied with life? These 5 books 
+                    that will change your life this year.
+                </a>
+            </h5>
+            <h6 class="text-white">Want to feel more satisfied with life? 
+                We picked out these 5 books that 
+                will change your life and your outlook this year.</h6>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 fonttype mt-1 mb-1">
+            <a asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="113">
+                <img class="border-0 rounded" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/Books.webp" id="image" />
+            </a>
+        </div>
+
+        <audio id="news3">
+            <source src="~/media/FiveBooks.mp3" type="audio/mpeg" />
+        </audio>
+    </div>
+</div>
+<hr />
+
+<div id="podcastContainer">
+    <div class="row justify-content-center">
+
+        <div class="col-xl-2 col-lg-2 col-md-2 mt-5 mb-3 ms-5">
+            <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg" id="icon4" onclick="PlayNews4()" />
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 fonttype mt-3 mb-3 text-white">
+            <h5>
+                <a class="border-0 text-dark" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="114">
+                    What are the Characteristics of Aging Hair!
+                    What Happens to Your Hair as You Age?
+                </a>
+            </h5>
+            <h6 class="text-white">Your face isn't the only part of your body 
+                that needs TLC as you age. 
+                As you combat crow's feet and fine lines, 
+                it's also important to address the needs of your aging hair.</h6>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 fonttype mt-1 mb-1">
+            <a asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="114">
+                <img class="border-0 rounded" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/AgingHair.webp" id="image" />
+            </a>
+        </div>
+
+        <audio id="news4">
+            <source src="~/media/HairAgeing.mp3" type="audio/mpeg" />
+        </audio>
+    </div>
+</div>
+<hr />
+
+<div id="podcastContainer">
+    <div class="row justify-content-center">
+
+        <div class="col-xl-2 col-lg-2 col-md-2 mt-5 mb-3 ms-5">
+            <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg" id="icon5" onclick="PlayNews5()" />
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 fonttype mt-3 mb-3 text-white">
+            <h5>
+                <a class="border-0 text-dark" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="115">
+                    Why Emotional Intelligence Is Important!
+                </a>
+            </h5>
+            <h6 class="text-white">The technical skills that helped secure your first promotion 
+                might not guarantee your next. If you aspire to be in a leadership role, 
+                there’s an emotional element you must consider.</h6>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 fonttype mt-1 mb-1">
+            <a asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="115">
+                <img class="border-0 rounded" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/EmotionalIntelli.webp" id="image" />
+            </a>
+        </div>
+
+        <audio id="news5">
+            <source src="~/media/EmotionalIntelligence.mp3" type="audio/mpeg" />
+        </audio>
+    </div>
+</div>
+<hr />
+
+    
+      
+<script type="text/javascript">
+    function PlayNews1() {
+        var news1 = document.getElementById('news1');
+        if (news1.paused) {
+            document.getElementById('news1').play();
+            $('#icon1').attr("src", "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/stopbutton.jpg");
+        }
+        else {
+            document.getElementById("news1").pause();
+            icon1.src = "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg";
+        }
+    }
+
+    function PlayNews2() {
+        var news2 = document.getElementById('news2');
+        if (news2.paused) {
+            document.getElementById('news2').play();
+            $('#icon2').attr("src", "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/stopbutton.jpg");
+        }
+        else {
+            document.getElementById("news2").pause();
+            icon2.src = "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg";
+        }
+    }
+
+    function PlayNews3() {
+        var news3 = document.getElementById('news3');
+        if (news3.paused) {
+            document.getElementById('news3').play();
+            $('#icon3').attr("src", "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/stopbutton.jpg");
+        }
+        else {
+            document.getElementById("news3").pause();
+            icon3.src = "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg";
+        }
+    }
+
+    function PlayNews4() {
+        var news4 = document.getElementById('news4');
+        if (news4.paused) {
+            document.getElementById('news4').play();
+            $('#icon4').attr("src", "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/stopbutton.jpg");
+        }
+        else {
+            document.getElementById("news4").pause();
+            icon4.src = "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg";
+        }
+    }
+    function PlayNews5() {
+        var news5 = document.getElementById('news5');
+        if (news5.paused) {
+            document.getElementById('news5').play();
+            $('#icon5').attr("src", "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/stopbutton.jpg");
+        }
+        else {
+            document.getElementById("news5").pause();
+            icon5.src = "https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg";
+        }
+    }
+</script>
+
+<style>
+    /* CSS for Podcast */
+    #podcastContainer {
+        margin-top: 10px;
+        background-image: url('https://dragonsstorage24.blob.core.windows.net/dragoncontainer/GreyBackground.jpg');
+        max-width:100%;
+        margin:auto;
+    }
+
+   #image
+   {
+       height:150px;
+       width:150px;
+  
+   }
+
+    #icon1, #icon2, #icon3, #icon4, #icon5 {
+        width: 50px;
+        cursor: pointer;
+        border-radius:60px;
+    }
+
+</style>

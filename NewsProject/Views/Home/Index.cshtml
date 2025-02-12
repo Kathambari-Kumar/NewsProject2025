@@ -1,0 +1,264 @@
+﻿@using NewsProject.Models.API
+@using NewsProject.Services
+@using Newtonsoft.Json
+@inject INewsArticleService _newsArticleService
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
+@{
+    ViewData["Title"] = "Home Page";
+    var apiResponse1 = await _newsArticleService.GetForecast("Linköping");
+    var apiResponse2 = await _newsArticleService.GetForecast("Finspång");
+    var apiResponse3 = await _newsArticleService.GetForecast("Norrköping");
+    var apiResponse0 = await _newsArticleService.GetForecast("Stockholm");
+    var exchangeResponse = await _newsArticleService.GetExchangeRate();
+    var session = HttpContextAccessor.HttpContext?.Session;
+    var hasActiveSubscription = session != null && session.GetString("HasActiveSubscription") == "True";   
+}
+
+
+<section class="">
+
+    <div class="container-fluid px-0">
+        <div class="row g-0">
+
+            <!-- First column -->
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 min-vh-100 pe-5 mt-2 mt-2">
+                @await Component.InvokeAsync("LatestNews")
+
+            </div>
+            <!-- Second column -->
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 min-vh-100 min-vh-md-50">
+                <vc:editors-choice></vc:editors-choice>
+                <div class="mt-2">
+                    @if (!hasActiveSubscription)
+                    {
+                        <a class="btn text-danger nav-link fw-bold fonttype" asp-Controller="Subscription" asp-action="Subscription">
+                            <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/subscribe1.jpg" width="100px; height:40px" />
+                            <h6>Explore more news by subscribing to our website!</h6>
+                        </a>
+                    }
+                </div>
+                <hr />
+                <vc:most-popular-news></vc:most-popular-news>
+
+                <!-- Advertisement Coursel -->
+                <div class="mt-lg-3">
+                    <div id="SidebarTitle" class="pt-1 ps-2 pb-0 fonttype"><p class="h6 text-white">Advertisement</p></div>
+                    <br />
+                    <div class="carousel slide px-5" data-bs-ride="carousel" id="SidebarBody">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="img-fluid" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/IKEA.jpg" alt="Ad Image">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="img-fluid" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/McDonald.jpg" alt="Ad Image">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="img-fluid" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/Stadium.jpg" alt="Ad Image">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="img-fluid" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/iPhone.jpg" alt="Ad Image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Advertisement end tag -->
+                <hr class="line1" />
+
+                <!-- Quiz -->
+                <div class="mt-lg-3 mt-sm-3">
+                    <div id="SidebarTitle" class="pt-1 ps-2 fonttype"><p class="h6 text-white">Quiz Zone</p></div>
+                    <div id="SidebarBody">
+                        <div class="mt-lg-3 mt-sm-3 mx-lg-4">
+                        <img class="img-fluid pt-2" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/Quiz%20Front.jpg" />
+                        <a class="btn text-white bg-success bg-gradient fonttype mb-2 mt-lg-2 ms-5" asp-controller="Quiz" asp-action="Index">Take the Quiz Now</a>
+                    </div>
+                    </div>
+                </div>
+                <hr class="line1" />
+
+                <!-- Weather Report -->
+                <div class="mt-lg-3 mt-sm-3">
+                    <div id="SidebarTitle" class="pt-1 ps-2 fonttype"><p class="h6 text-white">Weather</p></div>
+                    <div id="SidebarBody">
+                        <div class="mt-sm-3 mt-lg-3 mx-lg-4">
+                        <table class="table table-secondary fonttype fw-bold ps-3">
+                            <thead>
+                                <tr>
+                                    <td class="text-center bg-secondary text-white">City</td>
+                                    <td class="text-center bg-secondary text-white">Weather Summary</td>
+                                    <td class ="text-center bg-secondary text-white">Temperature</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">@apiResponse0.city</td>
+                                    <td class="text-center">@apiResponse0.Summary <img src="@apiResponse0.icon.url" style="width:30px;height:30px" /></td>
+                                    <td class="text-center">@apiResponse0.temperatureC<sup>o</sup>C</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">@apiResponse1.city</td>
+                                    <td class="text-center">@apiResponse1.Summary <img src="@apiResponse1.icon.url" style="width:30px;height:30px" /></td>
+                                    <td class="text-center">@apiResponse1.temperatureC<sup>o</sup>C</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">@apiResponse2.city</td>
+                                    <td class="text-center">@apiResponse2.Summary <img src="@apiResponse2.icon.url" style="width:30px;height:30px" /></td>
+                                    <td class="text-center">@apiResponse2.temperatureC<sup>o</sup>C</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">@apiResponse3.city</td>
+                                    <td class="text-center">@apiResponse3.Summary <img src="@apiResponse3.icon.url" style="width:30px;height:30px" /></td>
+                                    <td class="text-center">@apiResponse3.temperatureC<sup>o</sup>C</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                    <hr class="line1" />
+
+                    <!-- Exchange Rate -->
+                    <div class="mt-lg-2 mt-sm-3">
+                        <div id="SidebarTitle" class="pt-1 ps-2 fonttype"><p class="h6 text-white">Exchange Rate</p></div>
+                        <div id="SidebarBody">
+                            <div class="mt-lg-3 mt-sm-3 mx-lg-4">
+                            <table class="table table-secondary fonttype fw-bold ps-3">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center bg-secondary text-white">Currency</td>
+                                        <td class="text-center bg-secondary text-white">Rate</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" style="color:blue">USD [base currency]</td>
+                                        <td class="text-center">@exchangeResponse.rates.USD</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">SEK</td>
+                                        <td class="text-center">@exchangeResponse.rates.SEK</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">INR</td>
+                                        <td class="text-center">@exchangeResponse.rates.INR</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">EUR</td>
+                                        <td class="text-center">@exchangeResponse.rates.EUR</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">IRR</td>
+                                        <td class="text-center">@exchangeResponse.rates.IRR</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                        </div>
+                        </div>
+                        <hr class="line1" />
+                    </div>
+                   
+                    <!--Electricity-->
+
+                    <div class="mt-lg-3 mt-sm-3">
+                        <div id="SidebarTitle" class="pt-1 ps-2 fonttype table-secondary"><p class="h6 text-white"> Hourly Electricity Prices in Sweden </p></div>
+                        <div id="SidebarBody">
+                        <div class="mx-lg-4 mt-sm-3 mt-lg-3">
+                            <partial name="_HourlyElectricityTablePartial" />
+                        </div>
+                        </div>
+                       
+                    </div>
+                    
+                            
+                       
+                                     
+                  
+                </div>
+                <!-- Second column -->
+
+            </div>
+            <!-- Sign In Modal -->
+            <div class="modal fade" id="signInBanner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-black bg-gradient">
+                            <h5 class="modal-title text-white" id="exampleModalLabel">Terms and Conditions</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Welcome! We appreciate you choosing Digital Dragons!!
+                            Please take a moment to register/login yourself to explore
+                            more articles. When you register to us, you are communication with us
+                            electronically.You consent to receive communicationsfrom us electronically.
+                            And you need a digital subscription [Basic, Premium,Gold] to read exclusive articles.
+                            <h6 class="mt-1 fs-6">Privacy Ploicy</h6>
+                            <p>
+                                Please review our privacy policy notice which also governs your visit to
+                                our website, to understand our practices.
+                                <span>
+                                    <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+                                </span>
+                            </p>
+                            <p>Team Digital Dragons</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="line3" />
+            <div id="sports" >
+            <vc:sports count="4"></vc:sports>
+            </div>
+            <div id="weatherAndtech">
+            <vc:weather-and-tech count="4"></vc:weather-and-tech>
+            </div>
+           
+        </div>
+    </div>
+</section>
+<!-- Section: Split screen -->
+<script src="~/js/fetchElectricityData.js"></script>
+
+<style>
+    .img-fluid {
+        width: 100%;
+        height: 220px;
+        padding: 0px 5px 0px 5px;
+    }
+    hr.line1 {
+        border-top: 1px solid red;
+    }
+    hr.line3 {
+        border-top: 1px solid red;
+        border-radius : 3px;
+    }
+    #SidebarTitle {
+        height: auto;
+        background-color: darkolivegreen;
+        opacity: 0.8;
+        max-width: 100%;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+
+    #SidebarBody {
+        background-color: ghostwhite;
+    }
+
+    #Cookies {
+        background-color: darkolivegreen;
+        opacity: 0.6;
+        color: white;
+        display: block;
+    }
+
+    #signInBanner {
+        visibility: hidden;
+    }
+</style>
+

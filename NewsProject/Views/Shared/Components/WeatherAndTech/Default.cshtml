@@ -1,0 +1,80 @@
+﻿@model IEnumerable<NewsProject.Models.VM.BriefNewsVM>
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@inject SignInManager<User> SignInManager
+
+@* View component view for Weather and Technology *@
+<div id="Titlebar" class="mt-lg-2">
+    <p class="h6 text-white fonttype mt-lg-2 ms-lg-2">Weather & Technology</p>
+</div>
+
+<div class="fonttype row">
+    @foreach (var category in Model)
+    {
+        @foreach (var article in category.ArticleList)
+        {
+            @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Reader"))
+            {
+                <div class="col-lg-3 col-md-3 col-sm-12 mt-lg-2">
+                    <a class="btn" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                        <img src="@article.ImageLink" class="card-img-top" alt="...">
+                    </a>
+                    <a class="btn" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                        <h5 class="card-title">@article.LinkText</h5>
+                    </a>
+                    <p class="card-text">
+                        @article.ContentSummary
+                        <a class="btn" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">Read More...</a>
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-3 col-md-3 col-sm-12 mt-lg-2">
+                    <img src="@article.ImageLink" class="card-img-top" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner" alt="...">
+                    <h5 class="card-title" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">@article.LinkText</h5>
+                    <p class="card-text">
+                        @article.ContentSummary
+                        <a class="border-0" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">Read More...</a>
+                    </p>
+                </div>
+            }
+            <br />
+        }      
+    }
+    <div id="more" class="text-center mt-3">
+        <button id="font" onclick="MoreArticlesWeatherAndTech('6')" class="btn fw-bold btn-link text-danger">More Articles</button>
+    </div>
+    
+</div>
+
+
+<style>
+    #Titlebar {
+        min-height: auto;
+        background-color: darkolivegreen;
+        max-width: 100%;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+</style>
+
+<script>
+    function MoreArticlesWeatherAndTech(count){
+        $.ajax({
+            type: "GET",
+            url: "/NewsArticle/WeatherAndTechVC",
+            data: {count:count},
+            success: function(response){
+                console.log(response);
+                console.log(document.getElementById("weatherAndtech"));
+                    $("#weatherAndtech").html(response);
+                document.getElementById("more").hidden = true;
+            },
+            error : function(error){
+                alert("operation failed",error);
+            }
+        });
+    }
+</script>
+

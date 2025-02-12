@@ -1,0 +1,341 @@
+﻿@model NewsProject.Models.VM.DetailNewsVM
+@using NewsProject.Services
+@inject INewsArticleService _newsArticleService
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "DetailNewsDisplay";
+    var exchangeResponse = await _newsArticleService.GetExchangeRate();
+    var session = HttpContextAccessor.HttpContext?.Session;
+    var hasAnActiveSubscription = session != null && session.GetString("HasActiveSubscription") == "True";
+}
+@if (User.IsInRole("InActive"))
+{
+    <hr />
+    <div class="row">
+        <div class="col-xl-9 col-md-9">
+            <h5 id="font" class="justify-content-end text-danger">Article List</h5>
+        </div>
+        <div class="col-xl-3 col-md-3">
+            <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Admin" asp-action="ViewArticleByAuthor">Back</a>
+        </div>
+    </div>
+    <hr />
+}
+
+<section class="">
+  <div class="container-fluid px-0">
+    <div class="row g-0">
+        <!-- First column -->
+        <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12 min-vh-100 pe-3 mt-2 mt-2">
+            <hr />
+            <div id="Heading"><h1>Detailed News</h1></div>
+            <hr />
+
+            <div id="Titlebar" class="text-white px-2 pt-lg-2 pb-lg-2 mb-lg-3">
+                @Model.CategoryName
+            </div>
+
+            <div>
+                <img src="@Model.ImageLink" style="width:100%; height:auto;" />
+            </div>
+            <div id="DateStamp"> @Model.DateStamp.ToLongDateString(),  @Model.Continent</div>
+            <hr />
+            <div id="Author_leftwidth">&nbsp; Author : @Model.AuthorName</div>
+            <div class="mt-2" id="Linktext">@Model.LinkText</div>
+
+            <!-- Language selection form -->
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+               <select id="langSelect" class="bg-secondary bg-gradient border border-1 border-black text-white">
+                    <option value="Select Language">Select Language</option>         
+                    <option value="sv">Swedish</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                    <option value="de">German</option>
+                    <option value="hi">Hindi</option>
+                    <option value="ta">Tamil</option>
+                    <option value="sw">Swahili</option>
+                    <option value="ar">Arabic</option>
+                    <option value="fa">Farsi</option>
+                    <option value="ru">Russian</option>
+                    <option value="zh">Chinese</option>
+                    <option value="ja">Japanese</option>
+                     <option value="ko">Korean</option>
+               </select>
+                    <a class="btn bg-secondary text-white bg-gradient border border-1 border-black" onclick="Translate(@Model.ArticleId)" data-bs-toggle="modal" data-bs-target="#translatorModal">Translate</a>
+                <div class="bg-secondary bg-gradient border border-1 border-black">
+                    <img class="mt-1 mx-1" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/playicon.jpg" id="audioControl" onclick="PlayVoiceText()" />
+                </div>
+            </div>
+            <div id="Content" class="">
+                    <strong id="translatedContentSummary">@Model.ContentSummary</strong>
+                    <p id="translatedContent">@Model.Content</p>              
+            </div>
+            <br />
+            <div><audio id="audioPlayer">
+                <source id="audioSource" src="@Model.AudioUrl" type="audio/mp3"/>
+            </audio></div>           
+            @if (User.IsInRole("Reader"))
+            {
+                <div id="likeviewdiv">
+                    <span class="btn fa fa-eye fw-bold" style="color:blue">&nbsp; @Model.Views</span>
+                    <a class="btn" onclick="CountLikes(@Model.ArticleId)">&#10084;&nbsp;<span id="likecount" class="fw-bold" style="color:red">@Model.Likes</span></a>
+                </div>
+                <br />
+            }
+            @if ( (!hasAnActiveSubscription) && User.IsInRole("Reader") )
+            {
+                <div id="subscribeads" class="fw-bold">
+                    &nbsp; Subscribe now for more Exclsuive News!
+                </div>
+            }
+                
+            <hr />
+        </div>
+        <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12 min-vh-100 pe-3 mt-2 mt-2">
+            <div>
+                <vc:editors-choice></vc:editors-choice>
+            </div>
+            <!-- Advertisement Coursel -->
+            <div class="mt-lg-3">
+                <div id="SidebarTitle" class="pt-1 ps-2 pb-0 fonttype"><p class="h6 text-white">Advertisement</p></div>
+                <br />
+                    <div class="carousel slide px-5" data-bs-ride="carousel" id="SidebarBody">
+                    <div class="carousel-inner">
+                        @foreach (var ad in new[] { "IKEA.jpg", "McDonald.jpg", "Stadium.jpg", "iPhone.jpg" })
+                        {
+                            <div class="carousel-item @(ad == "IKEA.jpg" ? "active" : "")">
+                                <img class="img-fluid" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/@ad" alt="Ad Image">
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- Advertisement end tag -->
+            <hr />
+
+            <!-- Sign In Modal -->
+            <div class="modal fade" id="signInBanner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success bg-gradient">
+                            <h5 class="modal-title text-white" id="exampleModalLabel">Terms and Conditions</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Welcome! We appreciate you choosing Digital Dragons!!
+                            Please take a moment to register/login yourself to explore
+                            more articles. When you register to us, you are communication with us
+                            electronically.You consent to receive communicationsfrom us electronically.
+                            And you need a digital subscription [Basic, Premium,Gold] to read exclusive articles.
+                            <h6 class="mt-1 fs-6">Privacy Ploicy</h6>
+                            <p>
+                                Please review our privacy policy notice which also governs your visit to
+                                our website, to understand our practices.
+                                <span>
+                                    <a asp-controller="Home" asp-action="Privace">Privacy Ploicy</a>
+                                </span>
+                            </p>
+                            <h6>Team Digital Dragons</h6>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn bg-success bg-gradient" data-bs-dismiss="modal">Close</button>
+                            <a type="button" class="btn bg-success bg-gradient" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            <a type="button" class="btn bg-success bg-gradient" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Translated Article Modal -->
+                <div class="modal" id="translatorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-success bg-gradient">
+                                <h5 class="modal-title text-white" id="exampleModalLabel">Translator Service</h5>
+                                @* <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                </button> *@
+                            </div>
+                            <div class="modal-body">
+                                <p id="linkText"></p>
+                                <p id="contentSummary"></p>
+                                <p id="content"></p>
+                                <p class="text-danger" id="errorMessage"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn bg-success bg-gradient" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+
+            <!-- Exchange Rate -->
+            <div class="mt-lg-2 mt-sm-3">
+                <div id="SidebarTitle" class="pt-1 ps-2 fonttype"><p class="h6 text-white">Exchange Rate</p></div>
+                <div id="SidebarBody" >
+                    <div class="mt-lg-3 mt-sm-3 mx-lg-4">
+                    <table class="table table-secondary fonttype fw-bold ps-3">
+                        <thead>
+                            <tr>
+                                <td class="text-center bg-secondary">Currency</td>
+                                <td class="text-center bg-secondary">Rate</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center" style="color:blue">USD [base currency]</td>
+                                <td class="text-center">@exchangeResponse.rates.USD</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">SEK</td>
+                                <td class="text-center">@exchangeResponse.rates.SEK</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">INR</td>
+                                <td class="text-center">@exchangeResponse.rates.INR</t>
+                            </tr>
+                            <tr>
+                                <td class="text-center">EUR</td>
+                                <td class="text-center">@exchangeResponse.rates.EUR</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">IRR</td>
+                                <td class="text-center">@exchangeResponse.rates.IRR</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<style>
+    #Heading {
+        color: red;
+        text-align: left;
+        margin-top: 0px;
+        font-family: Bahnschrift;
+    }
+
+    #Titlebar {
+        background-color: dimgrey;
+        border: 1px solid;
+        border-left-color: red;
+        border-left-width: 7px;
+        font-size: 16px;
+        font-family: Bahnschrift;
+        height: auto;
+    }
+
+    #Linktext {
+        color: blue;
+        font-size: 25px;
+        font-family: Bahnschrift;
+        text-decoration: none;
+        text-align: left;
+    }
+
+    #DateStamp {
+        color: darkolivegreen;
+        opacity: 0.8;
+        font-family: Bahnschrift;
+        padding-left: 11px;
+    }
+
+    #Content {
+        font-family: Bahnschrift;
+        justify-content: center;
+        text-align: justify;
+        white-space: pre-line;
+        padding-left: 0px;
+    }
+
+    #Author_leftwidth {
+        border: 1px solid white;
+        border-left-color: dimgray;
+        border-left-width: 4px;
+        font-family: Bahnschrift;
+        color: blue;
+    }
+
+    #subscribeads {
+        border: 1px solid red;
+        border-left-width: 5px;
+        font-family: Bahnschrift;
+    }
+
+    #subscribeads {
+        border: 1px solid red;
+        border-left-width: 5px;
+        font-family: Bahnschrift;
+    }
+
+    #SidebarTitle {
+        height: auto;
+        background-color: darkolivegreen;
+        opacity: 0.8;
+        max-width: 100%;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+
+    .img-fluid {
+        width: 100%;
+        height: 230px;
+        padding: 0px 5px 0px 5px;
+    }
+    #SidebarBody {
+        background-color: ghostwhite;
+    }
+    #signInBanner {
+        visibility : hidden;
+    }
+
+    #audioControl {
+        width: 30px;
+        cursor: pointer;
+        border-radius: 30px;
+    }
+    
+    #translatorModal {
+        visibility: hidden;
+    }
+
+</style>
+
+<!-- jQuery for AJAX -->
+
+<script>
+    //     $(document).ready(function () {
+    //     $("#translateForm").submit(function (event) {
+    //         event.preventDefault();
+
+    //         var selectedLang = $("#langSelect").val();
+    //         var articleId = @Model.ArticleId;
+
+    //         $.ajax({
+    //             url: '/NewsArticle/Translate',
+    //             type: 'POST',
+    //             data: { id: articleId, lang: selectedLang },
+    //             success: function (response) {
+    //                 if (response.success) {
+    //                     $("#translatedLinkText").text(response.translatedLinkText);
+    //                     $("#translatedContentSummary").text(response.translatedContentSummary);
+    //                     $("#translatedContent").html(response.translatedContent);
+    //                 } else {
+    //                     $("#error-message").text("Translation failed. Please try again.");
+    //                 }
+    //             },
+    //             error: function () {
+    //                 $("#error-message").text("An error occurred. Please try again later.");
+    //             }
+    //         });
+    //     });
+    // });
+  
+</script> 

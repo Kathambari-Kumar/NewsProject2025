@@ -1,0 +1,96 @@
+﻿@model NewsProject.Models.DB.Article
+
+
+@{
+    ViewData["Title"] = "UpdateArticleByEditor";
+}
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Update Article</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Admin" asp-action="GetUnApprovedArticles">Back</a>
+    </div>
+</div>
+<hr />
+
+<div id="font" class="row justify-content-center border border-1" style="background-color:whitesmoke">
+    <div class="col-md-6">
+        <form asp-action="UpdateArticleByEditor" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div hidden class="form-group">
+                <label asp-for="DateStamp" class="control-label"></label>
+                <input asp-for="DateStamp" class="form-control" />
+                <span asp-validation-for="DateStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LinkText" class="control-label"></label>
+                <input asp-for="LinkText" class="form-control" />
+                <span asp-validation-for="LinkText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Headline" class="control-label"></label>
+                <input asp-for="Headline" class="form-control" />
+                <span asp-validation-for="Headline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentSummary" class="control-label"></label>
+                <textarea asp-for="ContentSummary" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="ContentSummary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control" rows="10"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="Views" class="control-label"></label>
+                <input asp-for="Views" class="form-control" />
+                <span asp-validation-for="Views" class="text-danger"></span>
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="Likes" class="control-label"></label>
+                <input asp-for="Likes" class="form-control" />
+                <span asp-validation-for="Likes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageLink" class="control-label"></label>
+                <input asp-for="ImageLink" class="form-control" />
+                <span asp-validation-for="ImageLink" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2 fw-bold">
+                <label for="file">Click to select an Image File to upload</label>
+                <input id="imgfile" asp-for="File" type="file" />
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="Continent" class="control-label"></label>
+                <input asp-for="Continent" class="form-control" />
+                <span asp-validation-for="Continent" class="text-danger"></span>
+            </div>
+            <div hidden class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsArchived" /> @Html.DisplayNameFor(model => model.IsArchived)
+                </label>
+            </div>
+            <div hidden class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsApproved" /> @Html.DisplayNameFor(model => model.IsApproved)
+                </label>
+            </div>
+            <div hidden class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EditorChoice" /> @Html.DisplayNameFor(model => model.EditorChoice)
+                </label>
+            </div>
+            <hr />
+            <div class="form-group mb-2">
+                <input type="submit" value="Save Changes" class="w-100 btn bg-success bg-gradient text-white" />
+            </div>
+            <br />
+        </form>
+    </div>
+</div>
+<hr />

@@ -1,0 +1,161 @@
+﻿@model NewsProject.Models.VM.QuizViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div id="quiz_first_row" class="row">
+   
+    <div id="quiz_first_row_left" class="col-md-6 col-lg-6 col-sm-12">
+        <div id="Titlebar" class="pt-1 mb-2 ps-2 mt-lg-4 fonttype"><p class="h6 text-white">Quiz Zone</p></div>
+        <div id="complete">
+        <div class="quiz-description">
+            <ul>
+                <li>The quizzes consists of ten questions.</li>
+                <li>
+                    No data will be collected on the website regarding your responses or
+                    how many times you take the quiz.
+                </li>
+
+                <li>Each question in the quiz is of multiple-choice or "true or false" format.</li>
+                <li>Read each question carefully, and click on the button next to your response.</li>
+                <li>
+                    Each correct or incorrect response will result in appropriate feedback
+                    immediately at the bottom of the screen.
+                </li>
+                 <li>
+                     If you select an incorrect response, you can try again until you get the correct response.
+                 </li>
+                  <li>When you complete the quiz, you can take a new quiz, another set of ten questions will be loaded.</li>
+            </ul>
+
+            @* <h2 style="font-weight: bold; font-size: 2rem; color: #007bff;"></h2> *@
+           
+        </div>
+
+        <div class="quiz-container">
+            <div>
+                <!-- Dynamic quiz image -->
+                <img src="@Model.Quiz.ImageLink" alt="Quiz Image" class="quiz-image" />
+            </div>
+            <!-- Separate the question number and question text -->
+            <div>
+                <h2 id="question-number" class="question-number-style">Question 1 of @ViewBag.TotalQuestions</h2>
+            </div>
+
+            <h2 id="question-text" class="question-text-style">@Model.Quiz.Question</h2>
+
+            <form id="quiz-form" data-correct-answer="@Model.Quiz.Answer">
+                <div>
+                    <label for="option1">
+                        <input id="option1" type="radio" name="answer" value="@Model.Quiz.Option1" /> @Model.Quiz.Option1
+                    </label>
+                </div>
+                <div>
+                    <label for="option2">
+                        <input id="option2" type="radio" name="answer" value="@Model.Quiz.Option2" /> @Model.Quiz.Option2
+                    </label>
+                </div>
+                <div>
+                    <label for="option3">
+                        <input id="option3" type="radio" name="answer" value="@Model.Quiz.Option3" /> @Model.Quiz.Option3
+                    </label>
+                </div>
+
+                <button type="button" id="submit-answer" class="btn btn-primary">Submit</button>
+            </form>
+
+            <div id="result-message" class="mt-3"></div>
+
+            <div id="navigation">
+                <button id="next-btn" class="btn btn-secondary">Next Question</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="quiz_first_row_right" class="col-md-6 col-lg-6 col-sm-12">
+        <div>     
+            <div class="mt-lg-3 mt-sm-3">
+                @* <div id="SidebarTitle" class="pt-1 ps-2 fonttype"><p class="h6 text-white">Quiz Zone</p></div> *@
+                <div style="background-color:ghostwhite" class="mt-lg-3 mt-sm-3 mx-lg-5">
+                    <img class="img-fluid pt-2" src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/Quiz%20Front.jpg" />
+                </div>
+            </div>
+            <div>
+                <vc:editors-choice></vc:editors-choice>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="~/js/quiz.js"></script>       
+    }
+<style>
+    /* Style for the labels of options */
+    #quiz-form label {
+        display: block; /* Ensure each option is on a separate line */
+        font-size: 1.2rem; /* Increase the font size for better readability */
+        color: #333; /* Use a neutral color for the text */
+        margin-bottom: 0.5rem; /* Add spacing between options */
+        padding: 0.5rem; /* Add padding around the text */
+        border: 1px solid #ddd; /* Add a subtle border around each option */
+        border-radius: 8px; /* Optional: Add rounded corners */
+        background-color: #f9f9f9; /* Light background for a polished look */
+        cursor: pointer; /* Change cursor to pointer for better UX */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+    }
+
+        /* Hover effect for options */
+        #quiz-form label:hover {
+            background-color: #007bff; /* Highlight background on hover */
+            color: #fff; /* Change text color on hover */
+        }
+
+    /* Style for the selected option */
+    #quiz-form input[type="radio"]:checked + label {
+        background-color: #007bff; /* Highlight selected background */
+        color: #fff; /* Change text color for the selected option */
+        border-color: #0056b3; /* Change border color */
+        font-weight: bold; /* Make the text stand out */
+    }
+    /*quiz index*/
+        
+
+
+    #quiz_first_row_left .quiz-image {
+        width: 90%;
+        height: 400px;
+        float: left;
+        margin-left: 5px;
+    }
+
+    .question-text-style {
+        font-size: 1.8rem;
+        color: #333;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+
+    .question-number-style {
+        font-size: 2.5rem;
+        color: #555;
+        text-align: center;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 0.5rem;
+    }
+
+    #Titlebar {
+        height: auto;
+        background-color: darkolivegreen;
+        opacity: 0.8;
+        max-width: 100%;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+</style>

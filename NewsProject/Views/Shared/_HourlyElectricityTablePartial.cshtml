@@ -1,0 +1,24 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div id="electricity-data">
+<table id="electricity-table" class="table table-bordered table-secondary">
+    <thead>
+        <tr>
+            <th class="text-center bg-secondary text-white">Region </th>
+            <th class="text-center bg-secondary text-white">Hour</th>
+            <th class="text-center bg-secondary text-white">Price (EUR)</th>
+            <th class="text-center bg-secondary text-white">Price (SEK)</th>
+            <th class="text-center bg-secondary text-white">KMeans Cluster</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="5" class="text-center">Loading data...</td>
+        </tr>
+    </tbody>
+</table>
+    <a class="btn fonttype text-danger text-center" asp-controller="API" asp-action="ElDataGraph">View Historical Electricity table</a>
+    
+</div>

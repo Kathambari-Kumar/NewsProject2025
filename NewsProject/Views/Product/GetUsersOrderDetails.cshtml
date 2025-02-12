@@ -1,0 +1,65 @@
+﻿@model IEnumerable<NewsProject.Models.VM.UserOrderVM>
+@using NewsProject.Models.DB
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@{
+    ViewData["Title"] = "GetUserOrderDetails";
+    var name = UserManager.FindByEmailAsync(User.Identity.Name).Result;
+    var UserName = name.FirstName + " " + name.LastName;
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Product Order Details</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Home" asp-action="Index">Back</a>
+    </div>
+</div>
+<hr />
+<div id="font" class="row justify-content-center border border-2" style="background-color:white">
+    <div class="col-lg-8 col-md-8 mb-2">
+
+        @if (Model.Any())
+        {
+
+            @foreach (var item in Model)
+            {
+                <h6> Order Date : @item.DateOfPurchase</h6>
+                <h6> Order ID : @item.OrderID</h6>
+                <h6> Total Products Ordered : @item.TotalOrderCount</h6>
+                <h6> Total Cost : @item.TotalOrderCost</h6>
+                <h4> Product List</h4>
+                <table class="table table-striped col-sm-3">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width:150px"> Name </th>
+                            <th class="text-center" style="width:20px"> Price[SEK]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in item.Products)
+                        {
+                            <tr style="width:50px">
+                                <td class="text-center">@product.Name</td>
+                                <td class="text-center">@product.Price</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <hr />
+            }
+        }
+        else
+        {
+            <div class="alert alert-info align-items-center" role="alert">
+                <h4 class="alert-heading">Digital Dragons</h4>
+                <h6>Dear @UserName</h6>
+                <h6>You haven't placed any orders yet!!</h6>
+                <h6>Team Digital Dragons</h6>
+                <hr />
+            </div>
+        }
+    </div>
+</div>

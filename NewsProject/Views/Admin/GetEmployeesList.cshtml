@@ -1,0 +1,55 @@
+﻿@model IEnumerable<NewsProject.Models.VM.EmployeeListVM>
+
+@{
+    ViewData["Title"] = "GetEmployeesList";
+    var result = TempData["Result"];
+}
+@if (result != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@result</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Employee List</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+    </div>
+</div>
+<hr />
+<div class="row justify-content-center">
+<div class="col-md-8">
+    <table class="table table-bordered table-success fonttype">
+        <thead>
+            <tr class="text-center">
+                <th class="text-center" style="width:200px">Name</th>
+                <th class="text-center" style="width:200px">Email-Address</th>
+                <th class="text-center" style="width:200px">Employee Role</th>
+                <th class="text-center" style="width:200px">Action[change role]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">@item.Fullname</td>
+                    <td class="text-center">@item.EmailAddress</td>
+                    <td class="text-center">@item.UserRole</td>
+                    <td class="text-center">
+                        <a class="text-red fw-bold" asp-controller="Admin" asp-action="EditEmployee" asp-route-id="@item.Id">Edit</a>
+                       
+                        @* <a class="text-danger fw-bold" asp-controller="Admin" asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+</div>
+
+<hr />

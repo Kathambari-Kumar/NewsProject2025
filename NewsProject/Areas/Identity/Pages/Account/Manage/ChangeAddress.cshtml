@@ -1,0 +1,34 @@
+﻿@page
+@model NewsProject.Areas.Identity.Pages.Account.Manage.ChangeAddressModel
+
+@{
+    ViewData["Title"] = "Change Address";
+    var address = TempData["OldAddress"];
+}
+
+<h3 id="font" class="justify-content-end text-danger">@ViewData["Title"]</h3>
+<hr />
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="address-form" method="post">
+            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="DeliveryAddress" class="form-control" value="@address" disabled />
+                <label asp-for="DeliveryAddress" class="form-label"></label>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <input asp-for="Input.NewAddress" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
+                <label asp-for="Input.NewAddress" class="form-label"></label>
+                <span asp-validation-for="Input.NewAddress" class="text-danger"></span>
+            </div>
+            <button id="change-address-button" type="submit" asp-page-handler="Change Address" class="w-100 btn btn-lg bg-success bg-gradient">Change Address</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,60 @@
+﻿@{
+    var result = TempData["Result"];
+}
+@if (result != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@result</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row">
+    <div id="firstColumnBgColor" class="fonttype text-black col-lg-7 col-md-7 col-sm-12 mt-3">
+        <h5 class="pt-3">Admin/Author/Editor Dashboard</h5>
+        <ul>
+            <li>Editor</li>
+            <ol>
+                <li>Create an Article</li>
+                <li>Apporve Articles</li>
+                <li>Choose Editors Choice</li>
+                <li>Create, Edit, Delete Quiz questions</li>
+            </ol>
+            <hr />
+            <li>Admin</li>
+            <ol>
+                <li>Add Employee</li>
+                <li>View Employee List and change their roles</li>
+                <li>View Subscription Statistics</li>
+                <li>Add Subscription Types</li>
+                <li>Create, Edit, Delete Products(Shop)</li>
+            </ol>
+            <hr />
+            <li>Author</li>
+            <ol>
+                <li>Create/Edit Articled</li>
+                <li>View Articles</li>
+            </ol>
+        </ul>
+        <hr />
+        <strong>Team Digital Dragons</strong>
+        <ul>
+            <li><h6>Kathambari Indrajith</h6></li>
+            <li><h6>Mansi Hosseini</h6></li>
+            <li><h6>Pauline Achieng</h6></li>
+        </ul>
+    </div>
+    <div id="secondColumnBgColor" class="col-lg-4 col-md-4 col-sm-12 mt-3">
+        <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/background.jpg" style="width:100%;height:100%" />
+    </div>
+</div>
+<hr />
+
+<style>
+    #secondColumnBgColor {
+        background-color: olivedrab;
+    }
+
+    #firstColumnBgColor {
+        background-color: lightgreen;
+    }
+</style>

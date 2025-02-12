@@ -1,0 +1,82 @@
+﻿@model IEnumerable<NewsProject.Models.DB.Product>
+
+﻿@using Microsoft.AspNetCore.Http
+@using NewsProject.Extensions;
+@using NewsProject.Services;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    var count = 0;
+    var cartList = HttpContextAccessor.HttpContext.Session.Get<List<int>>("ShoppingCart");
+    if (cartList != null)
+    {
+        count = cartList.Count();
+    }
+}
+@{
+    ViewData["Title"] = "DisplayProducts";
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <h5 id="font" class="justify-content-end text-danger">Products Waiting for Purchase</h5>
+    </div>
+    <div class="col-md-7 fonttype text-danger fw-bold d-flex justify-content-end">
+        <a class="btn bg-gradient text-white" style="background-color:darkolivegreen" onclick="CheckUserStatus()" data-bs-toggle="modal" data-bs-target="#CartAlert">
+            Go To Cart &nbsp;<i class="fa fa-shopping-cart"></i>&nbsp;
+            (<span id="CartCount">@count</span>&nbspitems)
+        </a>
+    </div>
+</div>
+<hr />
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div id="Card_Div" class="card border-success mb-4 col-md-3" style="max-width: 12rem;">
+            <div class="card-header bg-transparent fw-bold border-success">
+                @product.ProductName
+            </div>
+            <div class="card-body text-success">
+                <h5 class="card-title"> <img src="@product.ImageUrl" style="width:120px;height:150px;" /></h5>
+                <p class="card-text">In-Stock : <span class="fw-bold text-danger">@product.Price Kr.</span></p>
+            </div>
+            <div class="card-footer text-center fonttype bg-secondary border-success">
+                @* <strong>@product.Price Kr.</strong> *@
+                <a class="btn text-white fw-bold" onclick="AddToCart(@product.Id)">Add to Cart</a>
+            </div>
+        </div>
+
+    }
+</div>
+
+<div class="modal" id="CartAlert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success bg-gradient">
+                <h5 class="modal-title text-white" id="exampleModalLabel">Digital Dragons</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Hi, we appreciate you choosing Digital Dragons online shop!!
+                Please take a moment to register/login yourself to shop with
+                us. When you register to us, you are communication with us
+                electronically.You consent to receive communicationsfrom us electronically.
+                <h6 class="mt-2">Team Digital Dragons</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-success bg-gradient" data-bs-dismiss="modal">Close</button>
+                <a type="button" class="btn bg-success bg-gradient" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <a type="button" class="btn bg-success bg-gradient" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #CartAlert {
+        visibility: hidden;
+    }
+</style>

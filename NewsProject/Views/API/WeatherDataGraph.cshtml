@@ -1,0 +1,107 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<NewsProject.Models.API.WeatherData>
+
+@{
+    ViewData["Title"] = "Weather Data Graph for Multiple Cities";
+}
+
+<h2>Historical Weather Data for Four Cities (2025-01-13 to 2025-01-17)</h2>
+
+
+
+<div>
+    <canvas id="weatherGraph" width="800" height="400"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Group data by city
+    var groupedData = @Html.Raw(JsonConvert.SerializeObject(
+        Model.GroupBy(d => d.PartitionKey).Select(g => new
+        {
+            City = g.Key,
+            Data = g.Select(d => new
+            {
+                Date = d.Timestamp?.ToString("yyyy-MM-dd HH:mm:ss"),
+                Temperature = d.temperatureC
+            })
+        })
+    ));
+
+    console.log(groupedData); // Log data to debug
+
+    // Prepare data for the graph
+    var datasets = [];
+    var labelsSet = new Set(); // Collect all unique dates for X-axis labels
+
+    // Collect all unique dates across all cities
+    groupedData.forEach(cityData => {
+        cityData.Data.forEach(d => {
+            let date = d.Date.split(" ")[0]; // Extract only the date
+            labelsSet.add(date); // Add date to the Set
+        });
+    });
+
+    // Convert Set to an array and sort the dates
+    var labels = Array.from(labelsSet).sort((a, b) => new Date(a) - new Date(b));
+
+    groupedData.forEach(cityData => {
+        // Map city data to the sorted labels
+        let temperatureData = labels.map(date => {
+            let dayData = cityData.Data.find(d => d.Date.startsWith(date));
+            return dayData ? dayData.Temperature : null; // Use `null` for missing data
+        });
+
+        datasets.push({
+            label: cityData.City,
+            data: temperatureData,
+            backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`,
+            borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
+            borderWidth: 1
+        });
+    });
+
+    // Render the graph using Chart.js
+    var ctx = document.getElementById('weatherGraph').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar', // Changed to bar graph
+        data: {
+            labels: labels, // X-axis labels (sorted unique dates)
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    },
+                    ticks: {
+                        autoSkip: true,
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Temperature (°C)'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+

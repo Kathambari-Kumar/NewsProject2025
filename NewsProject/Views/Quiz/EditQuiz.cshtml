@@ -1,0 +1,84 @@
+﻿@model NewsProject.Models.DB.Quiz
+
+@{
+    ViewData["Title"] = "EditQuiz";
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Edit Quiz</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Admin" asp-action="QuizList">Back</a>
+    </div>
+</div>
+<hr />
+<div id="font" class="row justify-content-center border border-1" style="background-color:whitesmoke">
+    <div class="col-md-6">
+        <form asp-action="EditQuiz" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="HeadLine" class="control-label"></label>
+                <input asp-for="HeadLine" class="form-control" />
+                <span asp-validation-for="HeadLine" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageLink" class="control-label"></label>
+                <input asp-for="ImageLink" class="form-control" />
+                <span asp-validation-for="ImageLink" class="text-danger"></span>
+            </div>
+            <div class="form-group fw-bold mt-2">
+                <label for="file">Click to select an Image File to upload</label>
+                <input id="imgfile" asp-for="File" type="file" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateStamp" class="control-label"></label>
+                <input asp-for="DateStamp" class="form-control" />
+                <span asp-validation-for="DateStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Question" class="control-label"></label>
+                <input asp-for="Question" class="form-control" />
+                <span asp-validation-for="Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option1" class="control-label"></label>
+                <input asp-for="Option1" class="form-control" />
+                <span asp-validation-for="Option1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option2" class="control-label"></label>
+                <input asp-for="Option2" class="form-control" />
+                <span asp-validation-for="Option2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option3" class="control-label"></label>
+                <input asp-for="Option3" class="form-control" />
+                <span asp-validation-for="Option3" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="Answer" class="control-label"></label>
+                <input asp-for="Answer" class="form-control" />
+                <span asp-validation-for="Answer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="file">Select File to Upload</label>
+                <input id="imgfile" asp-for="File" type="file" />
+            </div>
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="Save" class="w-100 btn bg-success bg-gradient" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+

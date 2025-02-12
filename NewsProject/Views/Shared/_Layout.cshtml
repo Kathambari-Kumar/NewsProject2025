@@ -1,0 +1,255 @@
+﻿@using Microsoft.AspNetCore.Http
+@using NewsProject.Services;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var session = HttpContextAccessor.HttpContext?.Session;
+    var hasActiveSubscription = session != null && session.GetString("HasActiveSubscription") == "True";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NewsProject</title>
+    <!-- Add Bootstrap library-->
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Add JS Bootstrap library-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Microphone -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/privacy-policy.css" asp-append-version=true />
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Add Mystyle CSS -->
+    <link rel="stylesheet" href="~/NewsProject.styles.css" asp-append-version="true" />
+</head>
+
+<body class="bg-white">
+   
+<header class="bg-white">
+    <hr class="headerLine" />
+    <div class="bg-white mt-0 mb-1" id="LogoDiv">
+        
+        <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/Logo4.jpg" style="width:100px; height:100px" />
+        <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/Slogon3.jpg" style="width:300px; height:60px" />
+    </div>
+   
+</header>
+
+<!-- Menu Bar -->
+        @{
+            var local = "Local";
+            var sweden = "Sweden";
+            var world = "World";
+            var weather = "Weather";
+            var sports = "Sports";
+            var economy = "Economy";
+            var technology = "Technology";
+            var culture = "Culture";
+        }
+    <div id="categorymenubar">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a id="categorybtn" class="navbar-brand btn bg-gradient text-white fs-5" asp-controller="Home" asp-action="Index">HOME</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                       @*  <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" asp-controller="Home" asp-action="Index">Home</a>
+                        </li> *@
+                        <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" href="/NewsArticle/CategoryBasedArticles?categoryname=@local">Local</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" href="/NewsArticle/CategoryBasedArticles?categoryname=@sweden">Sweden</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" href="/NewsArticle/CategoryBasedArticles?categoryname=@world">World</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" href="/NewsArticle/CategoryBasedArticles?categoryname=@sports">Sport</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" href="/NewsArticle/CategoryBasedArticles?categoryname=@economy">Economy</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" href="/Product/DisplayProducts">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link text-white fw-bold" href="/Home/InteractiveChat">Help</a>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a id="categorybtn" class="btn bg-gradient btn-sm nav-link dropdown-toggle text-white fw-bold" href="#" role="button" data-bs-toggle="dropdown">Others</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/NewsArticle/CategoryBasedArticles?categoryname=@weather">Weather</a></li>
+                                <li><a class="dropdown-item" href="/NewsArticle/CategoryBasedArticles?categoryname=@technology">Technology</a></li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" href="/NewsArticle/CategoryBasedArticles?categoryname=@culture">Culture</a>
+                                </li>
+                                <li><a class="dropdown-item" href="/NewsArticle/PodcastNews">Podcast</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                   
+                </div>
+                <div>
+                    <partial name="_LoginPartial" />
+                </div>
+                    <form asp-controller="NewsArticle" asp-action="SearchArticleByTag" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <label for="searchword"></label>
+                        <input id="searchword" name="searchword" placeholder="Search by word.." />
+                    @*<button class="btn btn-danger"><i class="fa fa-search"></i></button>*@
+                    </form>
+                    <button onclick="ClickForSpeech()">
+                        <i class="material-icons mt-2" style="color:red; font-size:24px;">mic</i>
+                    </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Document body -->
+    <div class="container">
+        <main role="main" class="pb-3 min-vh-100">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="footerDiv" class="footer-bottom">
+        <img src="https://dragonsstorage24.blob.core.windows.net/dragoncontainer/Bottom%20Title.jpg" style="width:270px;height:40px" />
+        <br />
+        <!-- Add font awesome icons -->
+        Follow us on :
+        <a href="#" class="fa fa-facebook" id="footer"></a>
+        <a href="#" class="fa fa-twitter" id="footer"></a>
+        <a href="#" class="fa fa-instagram" id="footer"></a> <!-- Instagram -->
+        <hr />
+        <a class="btn text-black fw-bold" asp-area="" asp-controller="Home" asp-action="ShowCookies">Cookies</a>
+        <a class="btn text-black fw-bold" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <a class="btn text-black fw-bold" asp-area="" asp-controller="Home" asp-action="UserStory">User Stories</a>
+        <a class="btn text-black fw-bold" asp-area="" asp-controller="Home" asp-action="DesignLayout">Design Layout</a>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+<style>   
+    #LogoDiv {
+        text-align: center;
+    }
+
+    .headerLine {
+        border-top: 3px solid darkolivegreen;
+        border-radius: 3px;
+    }
+    .search {
+        position: relative;
+        box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+    }
+
+    .search input {
+        border: 2px solid #d6d4d4;
+    }
+
+    .search button {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .search .fa-search {
+        position: absolute;
+        top: 5px;
+        left: 7px;
+    }
+
+    #slogondiv {
+        float: left;
+        margin: 5px 0px 0px 20px;
+        align-content: center;
+        width: 30%;
+    }
+
+    #logindiv {
+        float: right;
+        margin: 10px 0px 0px 0px;
+        width: 40%;
+    }
+
+    #greetmsg {
+        color: darkolivegreen;
+    }
+
+    #subbtn {
+        background-color: darkolivegreen;
+        color: white;
+        float: right;
+    }
+
+    #categorymenubar {
+        background-color: darkolivegreen;
+        margin-top: 0px;
+        font-family: Bahnschrift;
+    }
+
+    #categorybtn {
+        justify-content: center;
+        border: 1px solid;
+        border-color: darkolivegreen;
+        margin-right: 3px;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+
+    #categorybtn:hover {
+        border-bottom-width: 2px;
+        border-bottom-color: red;
+    }
+
+    #footerDiv {
+        position: relative;
+        height: auto;
+        clear: both;
+        background-color: darkolivegreen;
+        max-width: 100%;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+
+    #footer {
+        padding: 2px;
+        font-size: 16px;
+        width: 25px;
+        height:25px;
+        text-align: center;
+        text-decoration: none;
+        background: white;
+        color: black;
+    }
+
+    .fa:hover {
+        opacity: 0.7;
+    }
+</style>

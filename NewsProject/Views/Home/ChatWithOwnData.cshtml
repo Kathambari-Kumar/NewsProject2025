@@ -1,0 +1,54 @@
+﻿<div class="chatBot">
+    <div class="pt-2 pb-1 bg-success text-white bg-gradient">
+        <h5 class="px-2 text-center">ChatBot</h5>
+    </div>
+
+    <div id="chatWindow" style="height:400px;">
+        <p class="chat">Hey! How can I assist you today?</p>
+    </div>
+</div>
+
+<div class="chatInput" style="height:50px;">
+    <input class="w-100 h-100 text-black" onchange="ChatWithOwnData()" id="chatRequest" />
+</div>
+
+<style>
+
+    .chatBot {
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+        border: 3px groove darkolivegreen;
+        border-radius: 10px;
+        margin: 50px auto;
+        width: 600px;
+        background: lightgrey;
+        overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+    }
+
+    .chatWindow {
+        /* padding: 15px; */
+        background-color: lightgrey;
+        align-self: flex-end;
+        color: black;
+        max-width: 100%;
+        word-wrap: break-word;
+    }
+
+    .chat {
+        margin: 10px 0px 0px 5px;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 90%;
+        word-wrap: break-word;
+        background-color: lightgreen;
+        color: black;
+    }
+
+    .chatInput {
+        border: 3px groove darkolivegreen;
+        border-radius: 10px;
+        margin: 50px auto;
+        width: 600px;
+        background: lightgrey;
+    }
+</style>

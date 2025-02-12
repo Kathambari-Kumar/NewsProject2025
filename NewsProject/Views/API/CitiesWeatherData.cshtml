@@ -1,0 +1,126 @@
+﻿@model NewsProject.Models.VM.WeatherVM
+@{
+    ViewData["Title"] = "CitiesWeatherData";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<h1 style="color: #2E86C1; background-color: #F4D03F; padding: 10px; text-align: center; border-radius: 5px;">
+    Weather Chart
+</h1>
+<div style="margin-top: 20px;">
+    <canvas id="weatherChart" width="400" height="200"></canvas>
+</div>
+
+<script>
+    // Assume that cities is an array of cities.
+    var cities = ["Linköping", "Norrköping", "Fingspång","Stockholm"];  
+
+    // Data get from models
+    var forecastDates = @Html.Raw(Json.Serialize(Model.WeatherForecasts.Select(f => f.date.ToString("yyyy-MM-dd HH:mm")).ToArray()));
+    var temperatureC = @Html.Raw(Json.Serialize(Model.WeatherForecasts.Select(f => f.temperatureC).ToArray()));
+    var temperatureF = @Html.Raw(Json.Serialize(Model.WeatherForecasts.Select(f => f.temperatureF).ToArray()));
+    var humidity = @Html.Raw(Json.Serialize(Model.WeatherForecasts.Select(f => f.humidity).ToArray()));
+    var windspeeds = @Html.Raw(Json.Serialize(Model.WeatherForecasts.Select(f => f.windSpeed).ToArray()));
+
+    // Converting the data to numeric type
+    temperatureC = temperatureC.map(function (item) { return parseFloat(item); });
+    temperatureF = temperatureF.map(function (item) { return parseFloat(item); });
+    humidity = humidity.map(function (item) { return parseFloat(item); });
+    windspeeds = windspeeds.map(function (item) { return parseFloat(item); });
+
+    // Calculating the minimum and maximum values for chart uniformity
+    var allValues = temperatureC.concat(temperatureF, humidity, windspeeds);
+    var minValue = Math.min(...allValues) - 5;  
+    var maxValue = Math.max(...allValues) + 5;  
+
+    // Data validation and chart rendering
+    if (forecastDates.length === 0 || temperatureC.length === 0) {
+        console.warn("No data available for the chart.");
+    } else {
+        var ctx = document.getElementById('weatherChart').getContext('2d');
+        var labels = forecastDates.map(function (date, index) {
+            return cities[index % cities.length] + " - " + date;});
+
+        
+        var weatherChart = new Chart(ctx, {
+            type: 'bar',  // Bar chart type
+            data: {
+                labels: labels,  // City names as labels (labels)
+                datasets: [
+                    {
+                        label: 'Temperature (°C)',
+                        data: temperatureC,
+                        borderColor: 'rgb(75, 192, 192)',  // Border line color
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',  // background color
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Temperature (°F)',
+                        data: temperatureF,
+                        borderColor: 'rgb(255, 99, 132)',  
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',  
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: humidity,
+                        borderColor: 'rgb(54, 162, 235)',  
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',  
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Wind Speed (km/h)',
+                        data: windspeeds,
+                        borderColor: 'rgb(153, 102, 255)',  
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',  
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Cities-Date'  
+                        },
+                        grid: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.1)' // Grid line color
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Values'  
+                        },
+                        beginAtZero: true,
+                        grid: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.1)' 
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',  //Position of the color legend
+                        labels: {
+                            boxWidth: 20,
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff'
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+    
+
+

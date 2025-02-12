@@ -1,0 +1,113 @@
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 16px;
+    font-family: Bahnschrift;
+}
+
+body {
+    overflow: auto;
+    font-family: Bahnschrift;
+}
+
+/* CSS for alert message */
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Font CSS */
+
+#font, .fonttype {
+    font-family: Bahnschrift;
+    font-size: 14px;
+}
+
+/* CSS for Shop */
+/* CSS for Display Products in Card */
+
+#Card_Div {
+    padding: 0px 5px 0px 5px;
+    margin-left: 5px;
+}
+
+/* CSS fot Display Items */
+#td5 a, p {
+    /* white-space:nowrap; */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/* CSS for Subscription */
+.news-image {
+    width: 100%; /* Makes the image take up the full width of its container */
+    height: 200px; /* Set a fixed height (adjust as needed) */
+    object-fit: cover; /* Ensures the image fills the container without distortion */
+    border-radius: 5px; /* Optional: to round the corners */
+}
+
+.card {
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-10px);
+    }
+
+/* CSS for alert */
+
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* CSS for table */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    text-align: left; /* Center align text */
+    padding: 10px; /* Add padding */
+    border: 1px solid #ddd; /* Add border */
+}
+
+td, a {
+    text-align: left; /* Center align text */
+    padding: 0px; /* Add padding */
+    border: 2px solid #ddd; /* Add border */
+    text-decoration:none;
+}
+
+

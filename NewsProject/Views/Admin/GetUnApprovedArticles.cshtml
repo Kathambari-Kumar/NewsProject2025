@@ -1,0 +1,52 @@
+﻿@model IEnumerable<NewsProject.Models.DB.Article>
+
+@{
+    ViewData["Title"] = "GetUnApprovedArticles";
+}
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Articles to be Approved</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient fonttype float-end" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+    </div>
+</div>
+<hr />
+<div id="font" class="row justify-content-center border border-2" style="background-color:white">
+    <div class="col-md-10">
+        <table class="table table-bordered table-success">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width:70px">DateStamp</th>
+                    <th class="text-center" style="width:250px">Headline</th>
+                    <th class="text-center" style="width:270px">Action</th>
+                    <th class="text-center" style="width:30px">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var status = "Status" + @item.Id;
+                    var comment = "Comment" + @item.Id;
+                    <tr>
+                        <td>@item.DateStamp.Date.ToString("d")</td>
+                        <td class="text-danger">
+                            <a class="btn" asp-controller="Admin" asp-action="UpdateArticleByEditor" asp-route-id="@item.Id">
+                                @item.LinkText
+                            </a>
+                        </td>
+                        <td>
+                            <a class="text-center btn bg-gradient text-danger" onclick="ApproveArticle(@item.Id)">Approve</a>
+                            <a class="text-center btn bg-gradient text-danger" onclick="DeleteArticle(@item.Id)">Delete</a>
+                            <a class="text-center btn bg-gradient text-danger" onclick="RejectArticle(@item.Id)">Reject</a>
+                            <textarea id='@comment' rows="2" placeholder="Comment..."></textarea>
+                        </td>
+                        <td><p id='@status' class="text-center fw-bold" style="color:blue">Pending...</p></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr />

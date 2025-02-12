@@ -1,0 +1,40 @@
+﻿@model IEnumerable<NewsProject.Models.DB.SubscriptionType>
+
+@{
+    ViewData["Title"] = "Subscription";
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Available Subscription Plans</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bg-gradient float-end fonttype" asp-controller="Home" asp-action="Index">Back</a>
+    </div>
+</div>
+<hr />
+    <div id="font" class="row justify-content-center border border-1" style="background-color:whitesmoke">
+        @foreach (var subscription in Model)
+        {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <!-- Styled subscription type -->
+                    <h5 class="card-title subscription-title">@subscription.TypeName</h5>
+                    <!-- Description text -->
+                    <p class="card-text">@subscription.Description</p>
+                    <!-- Price -->
+                    <p class="card-text"><strong>Price:</strong> @subscription.Price.ToString("C")</p>
+                    <!-- Subscribe button -->
+                    <a asp-action="SubscriptionCheckout" asp-route-subscriptionTypeId="@subscription.Id" class="btn bg-success bg-gradient">
+                        Subscribe Now
+                    </a>
+                </div>
+            </div>
+        </div>
+          
+
+        }
+    </div>
+<hr />

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<NewsProject.Models.VM.ViewArticleByAuthorVM>
+@{
+    ViewData["Title"] = "ViewArticleByAuthor";
+    var result = TempData["Result"];
+}
+
+@if (result != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@result</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Article List</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient float-end fonttype" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+    </div>
+</div>
+<hr />
+<div id="font" class="row justify-content-center border border-2" style="background-color:white">
+    <div class="col-md">
+        <table class="table table-bordered table-success">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width:70px">DateStamp</th>
+                    <th class="text-center" style="width:350px">Headline</th>
+                    @if (User.IsInRole("Author"))
+                    {
+                        <th class="text-center" style="width:70px">Status Message</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SingleArticle.DateStamp.Date.ToString("d")</td>
+                        <td class="text-danger">
+                            @if (User.IsInRole("InActive"))
+                            {
+                                <a asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@item.SingleArticle.Id">
+                                    @item.SingleArticle.Headline
+                                </a>
+                            }
+                            else {
+                                <a asp-controller="Admin" asp-action="UpdateArticleByAuthor" asp-route-id="@item.SingleArticle.Id">
+                                    @item.SingleArticle.Headline
+                                </a>
+                            }
+                        </td>
+                        @if (User.IsInRole("Author"))
+                        {
+                            <td>@item.StatusMessage</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,231 @@
+﻿@model NewsProject.Models.VM.WorldNewsVM
+
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@inject SignInManager<User> SignInManager
+
+@{
+    ViewData["Title"] = "WorldArticlesByContinent";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+@{
+    var asia = "Asia";
+    var africa = "Africa";
+    var antartica = "Antartica";
+    var northAmerica = "North America";
+    var southAmerica = "South America";
+    var europe = "Europe";
+    var australia = "Australia";
+}
+<!-- Continent Menubar -->
+
+<div id="continentmenubar">
+    <nav class="navbar navbar-expand-sm">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a id="continentbtn" class="btn bg-gradient btn-sm nav-link text-black fw-bold" href="/NewsArticle/WorldArticlesByContinent?continentname=@asia">Asia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="continentbtn" class="btn bg-gradient btn-sm nav-link text-black fw-bold" href="/NewsArticle/WorldArticlesByContinent?continentname=@africa">Africa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="continentbtn" class="btn bg-gradient btn-sm nav-link text-black fw-bold" href="/NewsArticle/WorldArticlesByContinent?continentname=@antartica">Antartica</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="continentbtn" class="btn bg-gradient btn-sm nav-link text-black fw-bold" href="/NewsArticle/WorldArticlesByContinent?continentname=@northAmerica">North America</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="continentbtn" class="btn bg-gradient btn-sm nav-link text-black fw-bold" href="/NewsArticle/WorldArticlesByContinent?continentname=@southAmerica">South America</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="continentbtn" class="btn bg-gradient btn-sm nav-link text-black fw-bold" href="/NewsArticle/WorldArticlesByContinent?continentname=@europe">Europe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="continentbtn" class="btn bg-gradient btn-sm nav-link text-black fw-bold" href="/NewsArticle/WorldArticlesByContinent?continentname=@australia">Australia</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<section class="">
+    <div class="container-fluid px-0">
+        <div class="row g-0">
+
+            <!-- First column -->
+            <div class="col-lg-7 col-md-6 col-sm-12 min-vh-100 pe-3 mt-2 mt-2">
+                <hr />
+                <div id="Heading"><h1>World News</h1></div>
+                <hr />
+                <div id="Titlebar" class="mb-2">
+                    <p class="h6 text-white ms-lg-2 mt-lg-2">@Model.Continent</p>
+                </div>
+                <div>
+                    @foreach (var article in Model.articles)
+                    {
+                        @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Reader"))
+                        {
+                            <div>
+                                <a id="LinkText" class="btn h6" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                                    @article.LinkText
+                                </a>
+
+                                <a class="btn" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">
+                                    <img src="@article.ImageLink" style="height:auto;max-width:100%" />
+                                </a>
+                          
+                                <div id="DateStamp" class="mt-0"> @article.DateStamp.ToLongDateString()</div>
+                                <div class="px-lg-2" id="Content">
+                                    @article.ContentSummary
+                                    <span style="color:darkgreen" class="h6">
+                                        <a class="btn border-0" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">Read More...</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr class="line3"/>
+                        }
+                        else
+                        {
+                            <div>
+                                <a id="LinkText" class="border-0 h4" style="color:blue" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">
+                                    @article.LinkText
+                                </a>
+                            </div>
+
+                            <div id="Image">
+                                <a class="btn h6" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">
+                                    <img src="@article.ImageLink" style="height:auto;max-width:100%" />
+                                </a>
+                            </div>
+
+                            <div id="DateStamp" class="text-dark opacity-50"> @article.DateStamp.ToLongDateString()</div>
+                            <div id="Content d-flex">
+                                @article.ContentSummary
+                                           <a class="btn border-0 text-danger" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">Read More...</a>
+                            </div>
+                            <hr class="line3"/>
+                        }
+                    }
+                </div>
+            
+            <!-- Pagination -->
+            <div id="pagination-controls" class="mt-3">
+                <nav>
+                    <ul class="pagination">
+                        @if (currentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="WorldArticlesByContinent" asp-route-continentname="@ViewBag.ContinentName" asp-route-page="@(currentPage - 1)">Previous</a>
+                            </li>
+                        }
+
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == currentPage ? "active" : "")">
+                                <a class="page-link" asp-action="WorldArticlesByContinent" asp-route-continentname="@ViewBag.ContinentName" asp-route-page="@i">@i</a>
+                            </li>
+                        }
+
+                        @if (currentPage < totalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="WorldArticlesByContinent" asp-route-continentname="@ViewBag.ContinentName" asp-route-page="@(currentPage + 1)">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+            </div>
+
+            <!-- Second column -->
+            <div class="col-lg-5 col-md-5 col-sm-12 min-vh-100 min-vh-md-50">
+                <vc:editors-choice count="3"></vc:editors-choice>
+                <vc:most-popular-news count="2"></vc:most-popular-news>
+            </div>
+            <vc:sports></vc:sports>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    #Heading {
+        color: red;
+        text-align: left;
+        margin-top: 0px;
+        font-family: Bahnschrift;
+    }
+
+    #continentmenubar {
+        padding: 0px 0px 0px 90px;
+        height: 30px;
+        width: 750px;
+        background-color: lightgray;
+        color: white;
+    }
+
+    #continentbtn {
+        justify-content: center;
+        border: 1px solid;
+        border-color: lightgray;
+        font-size: 16px;
+        font-family: Bahnschrift;
+        margin: -7px 1px 0px 0px;
+        height: 25px;
+        padding-top: 0px;
+    }
+
+    #Titlebar {
+        background-color: dimgrey;
+        border: 1px solid;
+        border-left-color: red;
+        border-left-width: 7px;
+        font-size: 16px;
+        font-family: Bahnschrift;
+        height: auto;
+    }
+
+    #Linktext {
+        color: blue;
+        font-size: 25px;
+        font-family: Bahnschrift;
+        text-decoration: none;
+        text-align: left;
+    }
+
+    #DateStamp {
+        color: darkolivegreen;
+        opacity: 0.8;
+        font-family: Bahnschrift;
+        padding-left: 11px;
+    }
+
+    #Content {
+        font-family: Bahnschrift;
+        justify-content: center;
+        text-align: justify;
+        white-space: pre-line;
+        padding-left: 0px;
+    }
+    #signInBanner {
+        visibility : hidden;
+    }
+
+    hr.line3 {
+        border-top: 1px solid red;
+        border-radius: 3px;
+    }
+</style>
+     
+     
+      
+

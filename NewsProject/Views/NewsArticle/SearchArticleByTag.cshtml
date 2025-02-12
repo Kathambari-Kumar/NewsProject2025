@@ -1,0 +1,128 @@
+﻿@model IEnumerable<NewsProject.Models.VM.BriefNewsVM>
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@inject SignInManager<User> SignInManager
+
+
+@{
+    ViewData["Title"] = "OnGetSearchByTag";
+}
+
+@* View for search by tag *@
+<div class="row">
+    <div class="col-lg-10 col-md-10 col-sm-10">
+        <hr />
+        <div id="Heading"><h3>Search Results</h3></div>
+        <hr />
+
+        @if (TempData["SearchStatus"] == null)
+        {
+            <!-- Title displayed once for each category -->
+            <div id="Titlebar" style="background-color:dimgray">
+                <p class="h6 text-white pt-lg-2 pb-lg-2 px-lg-3">Search Word :@Model.FirstOrDefault()?.CategoryName.ToUpper()</p>
+            </div>
+            @foreach (var item in Model)
+            {
+                <!-- Articles for the current category -->
+                <div class="fonttype">
+                    @foreach (var article in item.ArticleList)
+                    {
+                        <div class="d-flex mb-3 p-3 border rounded" style="background-color: #f8f9fa;">
+                            <!-- Image on the left -->
+                            <div class="flex-shrink-0" style="width: 150px;">
+                                <img src="@article.ImageLink" class="img-fluid rounded" alt="Article Image" style="height: auto; max-width: 100%;">
+                            </div>
+                            <!-- Content on the right -->
+                            <div class="flex-grow-1 ms-3">
+                                <h5>@article.Headline</h5>
+                                <p>@article.ContentSummary</p>
+                                @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Reader"))
+                                {
+                                    <a class="btn border-0" asp-controller="NewsArticle" asp-action="DetailNewsDisplay" asp-route-id="@article.Id">Read More...</a>
+                                }
+                                else
+                                {
+                                    <a class="btn border-0" onclick="CheckAccessLevel(@article.Id)" data-bs-toggle="modal" data-bs-target="#signInBanner">Read More...</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="fonttype">
+                <h4>No results for @TempData["SearchFailed"]</h4>
+                <h6>Search help</h6>
+                <ul>
+                    <li>Check your search for typos</li>
+                    <li>Use more generic search terms</li>
+                    <li>The word you are searching for may be not added to tag list </li>
+                </ul>
+            </div>
+            <hr />
+            <div id="Heading"><h3>Other News</h3></div>
+            <hr />
+            <div id="article-container">
+                <vc:all-articles pageNumber="1" pageSize="8"></vc:all-articles>
+            </div>
+        }
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="modal fade" id="signInBanner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success bg-gradient">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Terms and Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Welcome! We appreciate you choosing Digital Dragons!!
+                    Please take a moment to register/login yourself to explore
+                    more articles. When you register to us, you are communication with us
+                    electronically.You consent to receive communicationsfrom us electronically.
+                    And you need a digital subscription [Basic, Premium,Gold] to read exclusive articles.
+                    <h6 class="mt-1 fs-6">Privacy Ploicy</h6>
+                    <p>
+                        Please review our privacy policy notice which also governs your visit to
+                        our website, to understand our practices.
+                        <span>
+                            <a asp-controller="Home" asp-action="Privace">Privacy Ploicy</a>
+                        </span>
+                    </p>
+                    <h6>Team Digital Dragons</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-success bg-gradient" data-bs-dismiss="modal">Close</button>
+                    <a type="button" class="btn bg-success bg-gradient" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    <a type="button" class="btn bg-success bg-gradient" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #Heading {
+        color: red;
+        text-align: left;
+        margin-top: 0px;
+        font-family: Bahnschrift;
+    }
+
+    #Titlebar {
+        height: auto;
+        border: 1px solid;
+        border-left-color: red;
+        border-left-width: 7px;
+        max-width: 100%;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+
+    #signInBanner {
+        visibility: hidden;
+    }
+</style>

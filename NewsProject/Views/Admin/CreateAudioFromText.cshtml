@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Create headline Audio</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient fonttype float-end" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+    </div>
+</div>
+<hr />
+<form asp-action="CreateAudioFromText" method="post">
+    <div class="form-group mb-2">
+        <label for="contentText" class="control-label"></label>
+        <textarea for="contentText" name="contentText" class="form-control" rows="4"></textarea>
+    </div>
+    <div class="form-group mb-2">
+        <input type="submit" value="Create" class="w-100 btn btn-success bg-gradient" />
+    </div>
+</form>

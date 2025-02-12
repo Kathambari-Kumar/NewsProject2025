@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    var message = TempData["Message"];
+    var name = UserManager.FindByEmailAsync(User.Identity.Name).Result;
+    var fullname = name.FirstName + " " + name.LastName;
+}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        @if (message == "success")
+        {
+            <div class="alert alert-@message align-items-center" role="alert">
+                <h4 class="alert-heading">Digital Dragons</h4>
+                <h5>Dear @fullname,</h5> 
+                <h6>
+                    Subscription successful! Thank you for subscribing to our News Site.
+                    Enjoy your subscription.
+                    You will receive a confirmation email shortly!
+                </h6>
+            </div>
+        }
+        else if (message == "danger")
+        {
+            <div class="alert alert-@message align-items-center" role="alert">
+                <h4 class="alert-heading">Digital Dragons</h4>
+                <h6>
+                    Dear @fullname, We regret to inform you that your recent payment attempt was unsuccessful.
+                </h6>
+            </div>
+        }
+    </div>
+</div>
+<hr />

@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NewsProject.Extensions
+@using NewsProject.Models.DB
+
+@model IEnumerable<NewsProject.Models.VM.CartItem>
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject SignInManager<User> SignInManager
+
+@{
+    ViewData["Title"] = "DisplayCart";
+}
+
+@{
+    double total = 0.0;
+    var session = HttpContextAccessor.HttpContext.Session;
+    var count = 0;
+    var cartList = session.Get<List<int>>("ShoppingCart");
+    if (cartList != null)
+    {
+        count = cartList.Count();
+    }
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <h5 id="font" class="justify-content-end text-danger">Shopping Cart</h5>
+    </div>
+    <div class="col-md-7 fonttype text-danger fw-bold d-flex justify-content-end">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a asp-controller="Product" asp-action="Checkout" class="btn bg-gradient text-white" style="background-color:darkolivegreen">
+                Proceed to Checkout<i class="fa fa-shopping-cart"></i>&nbsp;
+                (<span id="CartCount">@count</span>&nbspitems)
+            </a>
+        }
+        else
+        {
+            <div class="mb-3 me-3 d-flex">
+                <strong class="me-3">Already have an account?</strong>
+                <a asp-area="Identity" asp-page="/Account/Login" class="me-3 text-white btn bg-success bg-gradient">
+                    Login
+                </a>
+                <hr />
+                <strong class="me-3">New User?</strong>
+                <a type="submit" class="me-3 text-white btn bg-success bg-gradient" asp-area="Identity" asp-page="/Account/Register">
+                    Register
+                </a>
+            </div>
+            <a asp-controller="Product" asp-action="Checkout" class="btn bg-gradient text-white" style="background-color:darkolivegreen">
+                Proceed to Checkout<i class="fa fa-shopping-cart"></i>&nbsp;
+                (<span id="CartCount">@count</span>&nbspitems)
+            </a>
+        }
+    </div>
+</div>
+<hr />
+
+<table class="table table-bordered table-success col-sm">
+    <thead>
+        <tr>
+            <th class="text-center text-dark" style="width:100px">Image</th>
+            <th class="text-center text-dark" style="width:200px">Name</th>
+            <th class="text-center text-dark" style="width:50px">Price [SEK]</th>
+            <th class="text-center text-dark" style="width:40px">SubTotal</th>
+            <th class="text-center text-dark" style="width:70px">Copies</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var copiesid = "changecopies" + @item.ProductId;
+            var subtotalid = "changesubtotal" + @item.ProductId;
+            var priceid = "changeprice" + @item.ProductId;
+            var rowid = "row" + @item.ProductId;
+
+            total = (double)total + (@item.Price * @item.Copies);
+            <tr class="fw-bold align-middle text-center" id="@rowid">
+                <td class ="text-center"><img class="border border-2 border-secondary" src="@item.ImageUrl" width="70" height="70" /></td>
+                <td class="text-center" style="width:130px">@item.Name</td>
+                <td class="text-center" style="width:50px" id="@priceid">@item.Price</td>
+                <td class="text-center" style="width:40px" id="@subtotalid">@(item.Price * item.Copies)</td>
+                <td class="text-center" nowrap="" id="td5" style="width:70px">
+                    <button class="btn btn-secondary fs-6" onclick="IncreaseCopy(@item.ProductId)">+</button>
+                    <p id='@copiesid'>@item.Copies</p>
+                    <button class="btn btn-secondary fs-6" onclick="DecreaseCopy(@item.ProductId)">-</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="col-sm">
+    <hr />
+    <p class="fw-bold"> Total [Kr]: &nbsp;</p><p class="fw-bold" id="totalid"> @total</p>
+</div>
+

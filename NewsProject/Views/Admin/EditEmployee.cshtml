@@ -1,0 +1,36 @@
+﻿@model NewsProject.Models.VM.EmployeeEditVM
+@{
+    ViewData["Title"] = "EditEmployee";
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Edit Role for @Model.FullName</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bd-gradient fonttype float-end" asp-controller="Admin" asp-action="GetEmployeesList">Back</a>
+    </div>
+</div>
+<hr />
+<div id="font" class="row justify-content-center border border-2" style="background-color:whitesmoke">
+<div class="col-md-6">
+    <form asp-action="EditEmployee" asp-controller="Admin" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group mb-2">
+            <label asp-for="EmailAddress">Email Address</label>
+            <input asp-for="EmailAddress" class="form-control" disabled />
+        </div>
+        <div class="form-group mb-2">
+            <label for="FullName">Employee Name</label>
+            <input type="text" asp-for="FullName" class="form-control" disabled />
+        </div>
+        <div class="form-group mb-2">
+            <label for="UserRole">Role</label>
+            <select asp-for="UserRole" asp-items="@(new SelectList(Model.Roles))" class="form-control"></select>
+        </div>
+        <button type="submit" class="w-100 mb-2 btn bg-success bg-gradient text-white">Save Changes</button>
+    </form>
+</div>
+</div>
+<hr />

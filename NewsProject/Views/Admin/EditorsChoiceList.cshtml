@@ -1,0 +1,58 @@
+﻿@model IEnumerable<NewsProject.Models.DB.Article>
+
+@{
+    ViewData["Title"] = "EditorsChoiceList";
+}
+
+<hr />
+<div class="row">
+    <div class="col-xl-6 col-lg-5 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">Editor Choice Article</h5>
+    </div>
+    <div class="col-xl-6 col-lg-7 col-md-3">
+        <a class="btn bg-success bg-gradient fonttype text-white float-end ms-2" asp-controller="Admin" asp-action="AdminEditorAuthorFrontPage">Back</a>
+        <button class="btn bg-success bg-gradient fonttype text-white float-end" onclick="ClearPreviousEditorsChoice()">Clear Previous Choices</button>
+    </div>
+</div>
+<h6>Before select articles, clear previous editor choice list.</h6>
+<h6>Maximum three articles can be selected</h6>
+
+<hr />
+<div class="row justify-content-center">
+<div class="col-xl-8 col-lg-8 col-md-8">
+<table id="articletable" class="table table-bordered table-success">
+    <thead>
+        <tr>
+            <th class="text-center" style="width:250px">LinkText</th>
+            <th class="text-center" style="width:250px">Headline</th>
+            <th class="text-center" style="width:100px">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var IsSelected = "Selected" + @item.Id;
+            var articleCheckbox = "Checkbox" + item.Id;
+            <tr>
+                <td>
+                    @if (@item.EditorChoice)
+                    {
+                      <input type="checkbox" id="@articleCheckbox" name="@articleCheckbox" class="onoffswitch-checkbox selectBox" onclick="SelectArticle(@item.Id)" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@articleCheckbox" name="@articleCheckbox" onclick="SelectArticle(@item.Id)" />
+
+                    }
+                    <label for="@articleCheckbox"></label>
+                            <a asp-controller="Admin" asp-action="DetailNewsForEditors" asp-route-id="@item.Id">@item.LinkText</a>
+                </td>
+                        <td><a asp-controller="Admin" asp-action="DetailNewsForEditors" asp-route-id="@item.Id">@item.Headline</a></td>
+                <td><p id='@IsSelected' class="text-center fw-bold" style="color:blue"></p></td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+</div>
+<hr />

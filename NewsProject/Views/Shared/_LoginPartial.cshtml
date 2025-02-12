@@ -1,0 +1,130 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@using NewsProject.Models.DB
+@using Microsoft.AspNetCore.Http
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var session = HttpContextAccessor.HttpContext?.Session;
+    var hasActiveSubscription = session != null && session.GetString("HasActiveSubscription") == "True";
+}
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    var name = UserManager.FindByEmailAsync(User.Identity.Name).Result;
+    var fullname = name.FirstName + " " + name.LastName;
+    if (User.IsInRole("Reader"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-white fw-bold" title="Manage">Hello @name.FirstName!</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white fs-6 fw-bold" href="#" role="button" data-bs-toggle="dropdown">My Page</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item  text-dark fs-6" asp-controller="Subscription" asp-action="ViewSubscriptionsList">Subscription History</a></li>
+                <li><a class="dropdown-item  text-dark fs-6" asp-controller="Product" asp-action="GetUsersOrderDetails">View Order History</a></li>
+                <li><a class="dropdown-item text-dark fs-6" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
+                    @if (hasActiveSubscription)
+                    {
+                        <li><a class="dropdown-item text-dark fs-6" asp-controller="Subscription" asp-action="UpgradeSubscription">Upgrade Subscription</a></li>
+                    }
+            </ul>
+        </li>
+    }   
+  else if (User.IsInRole("Admin"))
+  {
+        <li id="font" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white fs-6 fw-bold" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="FetchRolesStored">Add Employee</a></li>
+                @*  <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="OnGetAddRole">Add Role</a></li> *@
+                <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="GetEmployeesList">View Employees</a></li>
+                <li><a class="dropdown-item text-dark fs-6" asp-controller="Subscription" asp-action="SubscriptionChart">Subscription Statistics</a></li>
+                <li><a class="dropdown-item text-dark fs-6" asp-controller="Subscription" asp-action="AddSubscriptionType">Add SubscriptionType</a></li>
+                <li><a class="dropdown-item  text-dark fs-6" asp-controller="Product" asp-action="GetUsersOrderDetails">View Order History</a></li>                 
+            </ul>
+        </li>
+
+        <li id="font" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white fs-6 fw-bold" href="#" role="button" data-bs-toggle="dropdown">Product</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item text-dark fs-6" asp-controller="Product" asp-action="CreateProduct">Create</a></li>
+                <li><a class="dropdown-item text-dark fs-6" asp-controller="Product" asp-action="ProductDetails">Edit & Delete</a></li>
+            </ul>
+        </li>
+  }
+else if (User.IsInRole("Editor"))
+{
+    <li id="font" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white fs-6 fw-bold" href="#" role="button" data-bs-toggle="dropdown">Editor</a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="FetchCategoriesList">Create an Article</a></li>
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="GetUnApprovedArticles">Approve an Article</a></li>
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="EditorsChoiceList">Editor Choice</a></li>
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="AddCategory">Add a Category</a></li>
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="ViewArticleByAuthor">View Article</a></li>
+            <li><a class="dropdown-item  text-dark fs-6" asp-controller="Product" asp-action="GetUsersOrderDetails">View Order History</a></li>
+            <li><a class="dropdown-item  text-dark fs-6" asp-controller="Admin" asp-action="DisplayImageTags">Display  Image and Tags</a></li>
+        </ul>
+    </li>
+    <li id="font" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white fs-6 fw-bold" href="#" role="button" data-bs-toggle="dropdown">Quiz</a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Quiz" asp-action="CreateQuiz">Create</a></li>
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Quiz" asp-action="QuizList">Edit & Delete</a></li>
+        </ul>
+    </li>
+}
+else if (User.IsInRole("Author"))
+{
+    <li id="font" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white fs-6 fw-bold" href="#" role="button" data-bs-toggle="dropdown">Author</a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="FetchCategoriesList">Create an Article</a></li>
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="ViewArticleByAuthor">View Article</a></li>
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="AddCategory">Add a Category</a></li>
+            <li><a class="dropdown-item  text-dark fs-6" asp-controller="Product" asp-action="GetUsersOrderDetails">View Order History</a></li>
+        </ul>
+    </li>
+}
+else if (User.IsInRole("InActive"))
+{
+    <li id="font" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white fs-6 fw-bold" href="#" role="button" data-bs-toggle="dropdown">My Page</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item text-dark fs-6" asp-controller="Admin" asp-action="ViewArticleByAuthor">View Article</a></li>
+            <li><a class="dropdown-item  text-dark fs-6" asp-controller="Product" asp-action="GetUsersOrderDetails">View Order History</a></li>
+        </ul>
+    </li>
+}
+
+    <li class="nav-item">
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button  type="submit" class="nav-link btn btn-link text-white fs-6 fw-bold">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a id="menuButton" class="btn bg-gradient text-white fw-bold" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a id="menuButton" class="btn bg-gradient nav-link text-white fw-bold" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>
+<style>
+    #menuButton {
+        justify-content: center;
+        border: 1px solid;
+        border-color: darkolivegreen;
+        margin-right: 3px;
+        font-size: 16px;
+        font-family: Bahnschrift;
+    }
+
+</style>

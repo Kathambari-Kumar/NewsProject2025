@@ -1,0 +1,165 @@
+﻿@{
+    var images = ViewBag.Images as List<string>;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Story</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+            .image-row img {
+                width: 1000px;
+                height: auto;
+                border-radius: 8px;
+                border: 2px solid #ddd;
+                transition: transform 0.2s ease-in-out;
+            }
+
+                .image-row img:hover {
+                    transform: scale(1.1);
+                }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .pagination a {
+                text-decoration: none;
+                padding: 10px 20px;
+                background-color: #ddd;
+                border-radius: 5px;
+                margin: 0 10px;
+            }
+
+                .pagination a:hover {
+                    background-color: #ccc;
+                }
+
+        .arrow {
+            font-size: 70px;
+            margin: 20px 20px;
+            cursor: pointer;
+            color: #555;
+        }
+
+            .arrow:hover {
+                color: #000;
+            }
+
+       
+        .navigation-buttons {
+            position: fixed; 
+            top: 50%; 
+            right: 20px; 
+            transform: translateY(-50%); /* vertical centering buttons */
+            display: flex;
+            gap: 20px;
+            align-items: center; 
+            justify-content: center;
+        }
+
+            .navigation-buttons a {
+                padding: 10px 20px;
+                background-color: #4CAF50; 
+                color: white;
+                border-radius: 5px;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .navigation-buttons a:hover {
+                    background-color: #45a049; 
+                }
+
+
+
+    </style>
+</head>
+
+<hr />
+<div class="row">
+    <div class="col-xl-9 col-md-9">
+        <h5 id="font" class="justify-content-end text-danger">User Story</h5>
+    </div>
+    <div class="col-xl-3 col-md-3">
+        <a class="btn bg-success bg-gradient fonttype float-end text-white" asp-controller="Home" asp-action="Index">Back</a>
+    </div>
+   
+</div>
+<hr />
+<body>
+  
+    <div class="image-container">
+      
+        <div class="image-row">
+            @for (int i = 0; i < 2; i++)
+            {
+                <img src="@images[i]" alt="User Story Image" style="height:500;width:300px" />
+                @if (i < 1)
+                {
+                    <span class="arrow">→</span>
+                }
+            }
+        </div>
+
+       
+        <div class="image-row">
+            @for (int i = 2; i < 4; i++)
+            {
+                <img src="@images[i]" alt="User Story Image" style="height:500;width:300px" />
+                @if (i < 3)
+                {
+                    <span class="arrow">→</span>
+                }
+            }
+        </div>
+        <!-- Buttons "Previous" و "Next" -->
+        <div class="navigation-buttons">
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <a class="bg-success bg-gradient fonttype text-white" href="@Url.Action("UserStory", new { page = ViewBag.CurrentPage - 1 })">Previous</a>
+            }
+
+            <!--"Next" will only be displayed when there is a next page available. -->
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <a class="bg-success bd-gradient fonttype text-white" href="@Url.Action("UserStory", new { page = ViewBag.CurrentPage + 1 })">Next</a>
+            }
+        </div>
+    </div>
+<hr />
+    
+    <div style="text-align: center; margin-top: 40px;">
+        <p style="margin-bottom: 10px; font-size: 15px; color: #555;">
+            Prototype according to the UserStory
+        </p>
+        <a href="https://www.figma.com/proto/oBAlDgvEqo9smpEKamkfe5/Newswebsite?node-id=94-709&p=f&t=AbLTaXeRGvutOgcK-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=94%3A709" target="_blank"
+           class="bg-success bd-gradient fonttype text-white" style="text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 15px;">
+            Prototype
+        </a>
+    </div>
+<hr />
+</body>
+</html>
