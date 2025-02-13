@@ -470,10 +470,3 @@ namespace NewsProject.Controllers
     }
 }
 
-/// Author-1
-/// lilliflower@gmail.com : Mango1#
-/// Author-2
-/// david345@hotmail.com, Mango1#
-/// Admin -
-/// annanilsson@gmail.com, Mango1#
-
