@@ -328,21 +328,5 @@ namespace NewsProject.Controllers
         
         }
 
-
-
-        //author: david345@hotmail.com
-        //admin: annanilsson@gmail.com
-        //reader: mm@mm.se
-        //password for author,admin and reader: Mango1#
-
-        //editor:achiengpauline2@gmail.com
-        //password:Pauline2024@
-
-
-
-
-
-       
-
     }
 }
