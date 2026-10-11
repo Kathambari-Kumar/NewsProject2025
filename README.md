@@ -24,3 +24,5 @@ ASP.NET Core, C#, Azure Cognitive Services, Azure Translator, REST APIs, SQL Ser
 => Collaborated within an Agile development team to deliver production-ready features.<br>
 
 <img width="1280" height="652" alt="image" src="https://github.com/user-attachments/assets/0f1f793e-9e9b-416f-ab61-bfff6bac6f91" />
+
+<img width="1039" height="731" alt="image" src="https://github.com/user-attachments/assets/9ffb8003-a99c-4308-97e1-8f2db03b1465" />
