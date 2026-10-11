@@ -22,3 +22,5 @@ ASP.NET Core, C#, Azure Cognitive Services, Azure Translator, REST APIs, SQL Ser
 => Added multilingual support through Azure Translator.<br>
 => Developed authentication and authorization using ASP.NET Core Identity.<br>
 => Collaborated within an Agile development team to deliver production-ready features.<br>
+
+<img width="1280" height="652" alt="image" src="https://github.com/user-attachments/assets/0f1f793e-9e9b-416f-ab61-bfff6bac6f91" />
